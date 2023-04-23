@@ -26,7 +26,7 @@ public class AuthorRepository extends CRUD<Author>{
                 }
             }
         }
-        ;
+
         return instance;
     }
 

@@ -64,10 +64,7 @@ public class BookServices extends Services<Book> implements Serializable {
         return BookRepository.getBookRepository().findAll();
     }
 
-   @Inject
-   private BookBeanNumberGenerator generator;
-    @Inject
-    public int Test1(){
-        return this.generator.test();
-   }
+  public String isbnGenerator(){
+      return   BookBeanNumberGenerator.getInstance().test();
+  }
 }

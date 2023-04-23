@@ -52,10 +52,7 @@ public class Author extends Artist {
 
 
 
-//    public Author(Long id, String name, String family, String bio, LocalDate dateOfBirth, Integer age, Language language) {
-//        super(id, name, family, bio, dateOfBirth, age);
-//        this.language = language;
-//    }
+
 
 
     // ======================================
@@ -85,23 +82,23 @@ public class Author extends Artist {
     // ======================================
 
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (!(o instanceof Author)) return false;
-//
-//        Author author = (Author) o;
-//
-//        if (getLanguage() != author.getLanguage()) return false;
-//        return getBookList().equals(author.getBookList());
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        int result = getLanguage().hashCode();
-//        result = 31 * result + getBookList().hashCode();
-//        return result;
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Author)) return false;
+
+        Author author = (Author) o;
+
+        if (getLanguage() != author.getLanguage()) return false;
+        return getBookList().equals(author.getBookList());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getLanguage().hashCode();
+        result = 31 * result + getBookList().hashCode();
+        return result;
+    }
 
     @Override
     public String toString() {

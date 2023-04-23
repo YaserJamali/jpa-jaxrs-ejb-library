@@ -2,9 +2,13 @@ package tamin.library.controller;
 
 
 import com.google.gson.Gson;
+import tamin.library.model.entity.Book;
 import tamin.library.model.entity.CD;
 import tamin.library.model.service.AuthorServices;
+import tamin.library.model.service.BookServices;
 import tamin.library.model.service.CdServices;
+
+import java.time.LocalDate;
 
 public class PersonController {
 
@@ -35,5 +39,11 @@ public class PersonController {
         cd.setTitle(title).setTotalDuration(totalDuration).setUnitCost(unitCost).setGenre(genre).setDescription(description);
         CdServices.getCdServices().save(cd);
         return new Gson().toJson(cd);
+    }
+    public static String saveBook(String title,LocalDate publicationDate,  String description, double unitCost,Integer numberOfPages) {
+        Book book=new Book();
+        book.setIsbn(book.getIsbn()).setPublicationDate(publicationDate).setNbOfPage(numberOfPages).setUnitCost(unitCost).setTitle(title).setDescription(description);
+        BookServices.getBookServices().save(book);
+        return new Gson().toJson(book);
     }
 }

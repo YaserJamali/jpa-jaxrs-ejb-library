@@ -56,9 +56,7 @@ public class AuthorServices extends Services<Author> {
     public Author addAuthorAndBooks(Set<Book> booksList, Author author) {
         return AuthorRepository.getAuthorRepository().addAuthorAndBooks(booksList, author);
     }
-    private void validate(){
 
 
 
-    }
 }

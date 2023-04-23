@@ -19,6 +19,9 @@ public class Main {
 //      System.out.println(PersonController.findAll());
 //        PersonService.getInstance().save(new Person("ali","jamali","0080398413"));
 //        System.out.println(AuthorRepository.getAuthorRepository().findAll());
-        System.out.println(BookServices.getBookServices().Test1());
+        System.out.println(BookServices.getBookServices().isbnGenerator());
+        System.out.println(BookServices.getBookServices().isbnGenerator());
+        System.out.println(BookServices.getBookServices().isbnGenerator());
+        System.out.println(BookServices.getBookServices().isbnGenerator());
     }
 }

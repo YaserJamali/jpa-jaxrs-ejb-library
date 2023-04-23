@@ -6,9 +6,10 @@ import tamin.library.model.service.BL.ValidationListener;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
-//@MappedSuperclass
-@Entity(name = "artistEntity")
+@MappedSuperclass
+//@Entity(name = "artistEntity")
 @Table(name = "ARTIST_TABLE")
 @EntityListeners({AgeCalculationListener.class, ValidationListener.class})
 @DiscriminatorColumn(name = "ARTIST", discriminatorType = DiscriminatorType.STRING)
@@ -133,25 +134,13 @@ public abstract class Artist {
     }
 
 
+
     // ======================================
     // =    hashcode, equals & toString     =
     // ======================================
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Artist)) return false;
 
-        Artist artist = (Artist) o;
-
-        if (getId() != artist.getId()) return false;
-        if (!getName().equals(artist.getName())) return false;
-        if (!getFamily().equals(artist.getFamily())) return false;
-        if (!getBio().equals(artist.getBio())) return false;
-        if (!getDateOfBirth().equals(artist.getDateOfBirth())) return false;
-        return getAge().equals(artist.getAge());
-    }
 
 
 

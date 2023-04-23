@@ -3,9 +3,10 @@ package tamin.library.model.entity;
 import com.google.gson.Gson;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
-//@MappedSuperclass
-@Entity(name = "itemtEntity")
+@MappedSuperclass
+//@Entity(name = "itemtEntity")
 @Table(name = "ITEM_TABLE")
 @DiscriminatorColumn(name = "DISK", discriminatorType = DiscriminatorType.STRING) //its work with @Entity Annotations
 @DiscriminatorValue("BASE") //its work with @Entity Annotations
@@ -17,7 +18,7 @@ public abstract class Item {
     // ======================================
 
     @Id
-    @SequenceGenerator(name = "itemSeq", sequenceName = "item_seq",initialValue = 1,allocationSize = 1)
+    @SequenceGenerator(name = "itemSeq", sequenceName = "item_seq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itemSeq")
     protected Long id;
 
@@ -97,22 +98,9 @@ public abstract class Item {
     // ======================================
 
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (!(o instanceof Item)) return false;
-//
-//        Item item = (Item) o;
-//
-//        if (!getId().equals(item.getId())) return false;
-//        if (!getTitle().equals(item.getTitle())) return false;
-//        if (!getDescription().equals(item.getDescription())) return false;
-//        return getUnitCost().equals(item.getUnitCost());
-//    }
-
-
     @Override
     public String toString() {
         return new Gson().toJson(this);
     }
+
 }

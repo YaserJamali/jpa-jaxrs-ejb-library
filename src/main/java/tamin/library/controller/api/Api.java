@@ -10,6 +10,7 @@ import tamin.library.model.repository.AuthorRepository;
 import javax.ws.rs.ApplicationPath;
 
 @ApplicationPath("/api")
+
 public class Api {
 
     public static void main(String[] args) throws Exception {

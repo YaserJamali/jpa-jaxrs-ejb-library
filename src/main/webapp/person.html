@@ -5,7 +5,7 @@
     <title>PERSON</title>
 </head>
 <body>
-<form action="http://172.16.27.228/person/save" method="get">
+<form action="http://172.16.27.228/person/saveCd" method="get">
     <label>
         <input type="text" name="title" placeholder="title">
     </label>
@@ -13,16 +13,36 @@
         <input type="text" name="description" placeholder="description">
     </label>
     <label>
-        <input type="text" name="unitCost" placeholder="unitCost">
+        <input type="number" name="unitCost" placeholder="unitCost">
     </label>
     <label>
-        <input type="text" name="totalDuration" placeholder="totalDuration">
+        <input type="number" name="totalDuration" placeholder="totalDuration">
     </label>
     <label>
         <input type="text" name="genre" placeholder="genre">
     </label>
     <input type="submit" >
 </form>
+<form action="http://172.16.27.228/person/saveBook" method="get">
+    <label>
+        <input type="text" name="title" placeholder="title">
+    </label>
+    <label>
+        <input type="text" name="description" placeholder="description">
+    </label>
+    <label>
+        <input type="number" name="unitCost" placeholder="unitCost">
+    </label>
+    <label>
+    <input type="date" name="publicationDate" placeholder="publicationDate">
+</label>
+
+    <label>
+        <input type="number" name="numberOfPages" placeholder="Number Of Pages">
+    </label>
+    <input type="submit" >
+</form>
 <a href="http://172.16.27.228/person/find?token=123abc">PERSON LIST</a>
+<a  href=test.html >BACK</a>
 </body>
 </html>

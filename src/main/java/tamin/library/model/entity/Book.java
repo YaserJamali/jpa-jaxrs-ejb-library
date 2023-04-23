@@ -119,13 +119,13 @@ public class Book extends Item {
         return publicationDate.equals(book.publicationDate);
     }
 
-    @Override
-    public int hashCode() {
-        int result = getIsbn().hashCode();
-        result = 31 * result + getNbOfPage().hashCode();
-        result = 31 * result + publicationDate.hashCode();
-        return result;
-    }
+//    @Override
+//    public int hashCode() {
+//        int result = getIsbn().hashCode();
+//        result = 31 * result + getNbOfPage().hashCode();
+//        result = 31 * result + publicationDate.hashCode();
+//        return result;
+//    }
 
     @Override
     public String toString() {

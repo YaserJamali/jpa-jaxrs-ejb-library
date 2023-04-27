@@ -11,7 +11,7 @@
 //import ir.tamin.infra.apicatalogue.model.Catalogue;
 //import ir.tamin.infra.apicatalogue.service.general.RestServices;
 //import org.apache.http.NameValuePair;
-//import org.apache.http.client.utils.URLEncodedUtils;
+//import org.apache.http.client.Utils.URLEncodedUtils;
 //import org.apache.http.message.BasicNameValuePair;
 //import org.json.JSONObject;
 //

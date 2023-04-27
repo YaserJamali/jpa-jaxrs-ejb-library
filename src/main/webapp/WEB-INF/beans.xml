@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://java.sun.com/xml/ns/javaee"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
 
     <interceptors>
-        <class>ir.tamin.framework.cdi.event.EntityProxyMethodInterceptor</class>
-        <class>ir.tamin.framework.cdi.event.FunctionProxyMethodInterceptor</class>
-        <class>ir.tamin.framework.cdi.proxy.EntityOperationMethodInterceptor</class>
+<!--        <class>ir.tamin.framework.cdi.event.EntityProxyMethodInterceptor</class>-->
+<!--        <class>ir.tamin.framework.cdi.event.FunctionProxyMethodInterceptor</class>-->
+<!--        <class>ir.tamin.framework.cdi.proxy.EntityOperationMethodInterceptor</class>-->
+        <class>tamin.library.test1.LoggingInterceptor</class>
     </interceptors>
     <alternatives>
         <stereotype>${config.web.alternative}</stereotype>

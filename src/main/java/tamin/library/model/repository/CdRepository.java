@@ -6,18 +6,19 @@ import tamin.library.model.entity.Musician;
 import tamin.library.model.service.AuthorServices;
 import tamin.library.model.util.JPA;
 
+import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Set;
-
+@RequestScoped
 public class CdRepository extends CRUD<CD> {
     private static  CdRepository instance;
 
     private CdRepository() {
     }
-    public static CdRepository getCdRepository() {
+    public static CdRepository getInstance() {
         if (instance == null) {
             synchronized (CdRepository.class) {
                 if (instance == null) {
@@ -54,7 +55,7 @@ public class CdRepository extends CRUD<CD> {
 //    }
 
     @Override
-    public CD remove(long id) {
+    public CD remove(Long id) {
         EntityManager manager = JPA.getInstance().getEntityManager();
         EntityTransaction transaction = manager.getTransaction();
         transaction.begin();
@@ -66,7 +67,7 @@ public class CdRepository extends CRUD<CD> {
     }
 
     @Override
-    public CD findById(long id) {
+    public CD findById(Long id) {
         EntityManager manager = JPA.getInstance().getEntityManager();
         CD cd = manager.find(CD.class, id);
         manager.close();

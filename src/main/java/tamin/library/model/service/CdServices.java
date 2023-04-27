@@ -1,20 +1,19 @@
 package tamin.library.model.service;
 
 
+import com.google.gson.Gson;
 import tamin.library.model.entity.CD;
-import tamin.library.model.entity.Musician;
 import tamin.library.model.repository.CdRepository;
-import tamin.library.model.util.JPA;
-
-import java.util.List;
-import java.util.Set;
+import tamin.library.model.repository.MusicianRepository;
+import tamin.library.model.service.BL.Utils;
 
 public class CdServices extends Services<CD>{
     private static  CdServices instance;
+
     private CdServices(){
 
     }
-    public static CdServices getCdServices(){
+    public static CdServices getInstance(){
         if (instance == null) {
             synchronized (CdServices.class) {
                 if (instance == null) {
@@ -22,35 +21,30 @@ public class CdServices extends Services<CD>{
                 }
             }
         }
-        ;
         return instance;
     }
 
     @Override
-    public CD save(CD cd) {
-        return CdRepository.getCdRepository().save(cd);
+    public String save(CD cd) {
+        return new Gson().toJson(CdRepository.getInstance().save(cd));
     }
 
-//    @Override
-//    public CD edit(CD cd) {
-//        return CdRepository.getCdRepository().edit(cd);
-//    }
 
     @Override
-    public CD remove(Long id) {
-        return CdRepository.getCdRepository().remove(id);
+    public String remove(Long id) {
+        return new Gson().toJson(CdRepository.getInstance().remove(id));
     }
 
     @Override
-    public CD findById(Long id) {
-        return CdRepository.getCdRepository().findById(id);
+    public String findById(Long id) {
+        return new Gson().toJson(CdRepository.getInstance().findById(id));
     }
 
     @Override
-    public List<CD> findAll() {
-        return CdRepository.getCdRepository().findAll();
+    public String findAll() {
+        return listWrap(CdRepository.getInstance().findAll());
     }
-    public CD addCdAndMusicianOfTheBand(Set<Musician> musicians, CD musicName){
-        return CdRepository.getCdRepository().addCdAndMusicianOfTheBand(musicians,musicName);
-    }
+
+
+
 }

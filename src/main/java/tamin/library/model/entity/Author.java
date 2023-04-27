@@ -4,8 +4,8 @@ package tamin.library.model.entity;
 import com.google.gson.Gson;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -20,9 +20,9 @@ public class Author extends Artist {
     // ======================================
     // =             Attributes             =
     // ======================================
-    @Column(columnDefinition = "number(2)")
-    @Enumerated(EnumType.ORDINAL)
-    private Language language;
+//    @Column(columnDefinition = "number(2)")
+//    @Enumerated(EnumType.ORDINAL)
+//    private Language language;
     @OneToMany(cascade = PERSIST, fetch = FetchType.EAGER)
     @JoinTable(name = "books_fk",
             joinColumns = @JoinColumn(name = "a_fk"),
@@ -35,38 +35,20 @@ public class Author extends Artist {
 
 
 
-    // ======================================
-    // =            Constructors            =
-    // ======================================
-//    public Author() {
-//    }
-//
-//    public Author(String name, String family, LocalDate dateOfBirth) {
-//        super(name, family, dateOfBirth);
-//    }
-//
-//    public Author(String name, String family, String bio, LocalDate dateOfBirth, Language language) {
-//        super(name, family, bio, dateOfBirth);
-//        this.language = language;
-//    }
-
-
-
-
 
 
     // ======================================
     // =          Getters & Setters         =
     // ======================================
 
-    public Language getLanguage() {
-        return language;
-    }
-
-    public Author setLanguage(Language language) {
-        this.language = language;
-        return this;
-    }
+//    public Language getLanguage() {
+//        return language;
+//    }
+//
+//    public Author setLanguage(Language language) {
+//        this.language = language;
+//        return this;
+//    }
 
     public Set<Book> getBookList() {
         return bookList;
@@ -82,23 +64,19 @@ public class Author extends Artist {
     // ======================================
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Author)) return false;
-
-        Author author = (Author) o;
-
-        if (getLanguage() != author.getLanguage()) return false;
-        return getBookList().equals(author.getBookList());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getLanguage().hashCode();
-        result = 31 * result + getBookList().hashCode();
-        return result;
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        if (!super.equals(o)) return false;
+//        Author author = (Author) o;
+//        return Objects.equals(bookList, author.bookList);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(super.hashCode(), bookList);
+//    }
 
     @Override
     public String toString() {

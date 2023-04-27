@@ -4,13 +4,15 @@ package tamin.library.model.repository;
 import tamin.library.model.entity.Book;
 import tamin.library.model.util.JPA;
 
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.time.LocalDate;
 import java.util.List;
-
+@RequestScoped
 public class BookRepository extends CRUD<Book> {
     private static BookRepository instance;
 
@@ -19,7 +21,7 @@ public class BookRepository extends CRUD<Book> {
     }
 
 
-    public static BookRepository getBookRepository() {
+    public static BookRepository getInstance() {
         if (instance == null) {
             instance = new BookRepository();
         }
@@ -52,7 +54,7 @@ public class BookRepository extends CRUD<Book> {
 //    }
 
     @Override
-    public Book remove(long id) {
+    public Book remove(Long id) {
         EntityManager manager = JPA.getInstance().getEntityManager();
         EntityTransaction transaction = manager.getTransaction();
         transaction.begin();
@@ -64,7 +66,7 @@ public class BookRepository extends CRUD<Book> {
     }
 
     @Override
-    public Book findById(long id) {
+    public Book findById(Long id) {
         EntityManager manager = JPA.getInstance().getEntityManager();
         Book book = manager.find(Book.class, id);
         manager.close();

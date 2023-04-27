@@ -5,11 +5,11 @@ import tamin.library.model.entity.Musician;
 import tamin.library.model.service.AuthorServices;
 import tamin.library.model.util.JPA;
 
+import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 import java.util.List;
-
 public class MusicianRepository extends CRUD<Musician> {
     private static  MusicianRepository instance ;
 
@@ -55,7 +55,7 @@ public class MusicianRepository extends CRUD<Musician> {
 //    }
 
     @Override
-    public Musician remove(long id) {
+    public Musician remove(Long id) {
         EntityManager manager = JPA.getInstance().getEntityManager();
         EntityTransaction transaction = manager.getTransaction();
         transaction.begin();
@@ -67,7 +67,7 @@ public class MusicianRepository extends CRUD<Musician> {
     }
 
     @Override
-    public Musician findById(long id) {
+    public Musician findById(Long id) {
         EntityManager manager = JPA.getInstance().getEntityManager();
         Musician musician = manager.find(Musician.class, id);
         manager.close();

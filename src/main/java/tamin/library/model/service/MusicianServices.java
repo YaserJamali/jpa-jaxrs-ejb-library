@@ -1,6 +1,7 @@
 package tamin.library.model.service;
 
 
+import com.google.gson.Gson;
 import tamin.library.model.entity.Musician;
 import tamin.library.model.repository.MusicianRepository;
 import tamin.library.model.util.JPA;
@@ -26,27 +27,22 @@ public class MusicianServices extends Services<Musician>{
     }
 
     @Override
-    public Musician save(Musician musician) {
-        return MusicianRepository.getInstance().save(musician);
-    }
-
-//    @Override
-//    public Musician edit(Musician musician) {
-//        return MusicianRepository.getInstance().edit(musician);
-//    }
-
-    @Override
-    public Musician remove(Long id) {
-        return MusicianRepository.getInstance().remove(id);
+    public String save(Musician musician) {
+        return new Gson().toJson(MusicianRepository.getInstance().save(musician));
     }
 
     @Override
-    public Musician findById(Long id) {
-        return MusicianRepository.getInstance().findById(id);
+    public String remove(Long id) {
+        return new Gson().toJson(MusicianRepository.getInstance().remove(id));
     }
 
     @Override
-    public List<Musician> findAll() {
-        return MusicianRepository.getInstance().findAll();
+    public String findById(Long id) {
+        return new Gson().toJson(MusicianRepository.getInstance().findById(id));
+    }
+
+    @Override
+    public String  findAll() {
+        return listWrap(MusicianRepository.getInstance().findAll());
     }
 }

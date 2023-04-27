@@ -1,22 +1,21 @@
 package tamin.library.model.service;
 
 
+import com.google.gson.Gson;
 import tamin.library.model.entity.Author;
-import tamin.library.model.entity.Book;
 import tamin.library.model.repository.AuthorRepository;
-import tamin.library.model.util.JPA;
 
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
 
 public class AuthorServices extends Services<Author> {
-    private static  AuthorServices instance;
+    private static AuthorServices instance;
+
 
     private AuthorServices() {
 
     }
 
-    public static AuthorServices getAuthorServices() {
+    public static AuthorServices getInstance() {
         if (instance == null) {
             synchronized (AuthorServices.class) {
                 if (instance == null) {
@@ -24,39 +23,49 @@ public class AuthorServices extends Services<Author> {
                 }
             }
         }
-        ;
         return instance;
     }
 
     @Override
-    public Author save(Author author) {
-        return AuthorRepository.getAuthorRepository().save(author);
+    public String save(Author author) {
+        return new Gson().toJson(AuthorRepository.getInstance().save(author));
     }
 
 //    @Override
 //    public Author edit(Author author) {
-//        return AuthorRepository.getAuthorRepository().edit(author);
+//        return AuthorRepositor.getAuthorRepository().edit(author);
 //    }
 
     @Override
-    public Author remove(Long id) {
-        return AuthorRepository.getAuthorRepository().remove(id);
+    public String remove(Long id) {
+        return new Gson().toJson(AuthorRepository.getInstance().remove(id));
     }
 
     @Override
-    public Author findById(Long id) {
-        return AuthorRepository.getAuthorRepository().findById(id);
+    public String findById(Long id) {
+        return new Gson().toJson(AuthorRepository.getInstance().findById(id));
     }
 
     @Override
-    public List<Author> findAll() {
-        return AuthorRepository.getAuthorRepository().findAll();
+    public String findAll() {
+        return listWrap(AuthorRepository.getInstance().findAll());
     }
 
-    public Author addAuthorAndBooks(Set<Book> booksList, Author author) {
-        return AuthorRepository.getAuthorRepository().addAuthorAndBooks(booksList, author);
+    public String update(Long id, String name, String family, LocalDate brithDay, LocalDate deathDay, String bio) {
+        return AuthorRepository.getInstance().updateInstance(id, name, family, brithDay, deathDay, bio);
     }
 
+    public String saveAuthor(String name, String family, LocalDate brithDay, LocalDate deathDay, String bio) {
+        return AuthorRepository.getInstance().saveInstance(name, family, brithDay, deathDay, bio);
+    }
+
+    public String removeByID(Long id) {
+        if (AuthorRepository.getInstance().findById(id) != null) {
+
+            return new Gson().toJson(AuthorRepository.getInstance().remove(id)+" Is Removed");
+        }
+        return new Gson().toJson("This ID: " + id + " IS Not Exist");
+    }
 
 
 }

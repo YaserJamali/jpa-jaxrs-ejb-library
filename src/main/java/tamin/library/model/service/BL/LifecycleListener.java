@@ -3,8 +3,6 @@ package tamin.library.model.service.BL;
 
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.Period;
 
 
 public class LifecycleListener {
@@ -24,7 +22,7 @@ public class LifecycleListener {
 
   @PreUpdate
   void preUpdate(Object object) {
-    System.out.println(".LifecylceListener       preUpdate()");
+    System.out.println(".LifecycleListener       preUpdate()");
   }
 
   @PostUpdate

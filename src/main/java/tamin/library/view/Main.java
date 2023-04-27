@@ -1,27 +1,11 @@
 package tamin.library.view;
 
-import com.sun.jersey.api.container.httpserver.HttpServerFactory;
-import com.sun.jersey.api.core.PackagesResourceConfig;
-import com.sun.jersey.api.core.ResourceConfig;
-import com.sun.net.httpserver.HttpServer;
-import tamin.library.model.repository.AuthorRepository;
-import tamin.library.model.repository.CdRepository;
-import tamin.library.model.service.BookServices;
-
-import java.util.Random;
+import tamin.library.controller.CdController;
+import tamin.library.controller.api.CdApi;
+import tamin.library.model.service.CdServices;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-//        ResourceConfig config= new PackagesResourceConfig("tamin.library.controller.api");
-//        HttpServer server= HttpServerFactory.create("http://localhost:80/",config);
-//        server.start();
-
-//      System.out.println(PersonController.findAll());
-//        PersonService.getInstance().save(new Person("ali","jamali","0080398413"));
-//        System.out.println(AuthorRepository.getAuthorRepository().findAll());
-        System.out.println(BookServices.getBookServices().isbnGenerator());
-        System.out.println(BookServices.getBookServices().isbnGenerator());
-        System.out.println(BookServices.getBookServices().isbnGenerator());
-        System.out.println(BookServices.getBookServices().isbnGenerator());
+        System.out.println(CdController.getInstance().saveCd("name", "family", 2.5, 3.5, "ddddd"));
     }
 }

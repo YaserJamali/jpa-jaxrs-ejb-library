@@ -4,17 +4,18 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.time.LocalDate;
 
 import com.google.gson.Gson;
 import org.hibernate.annotations.NamedQuery;
+import tamin.library.model.service.BL.LifecycleListener;
+import tamin.library.model.service.BL.ValidationListener;
 
 
 @Entity(name = "musicianEntity")
-//@EntityListeners({
-//        ValidationListener.class
-//
-//})
+@EntityListeners({
+        ValidationListener.class, LifecycleListener.class
+
+})
 @NamedQuery(name = "OLD_MUSICIAN", query = "select m.name,m.family,m.dateOfBirth   from musicianEntity m order by id,name,family")
 @NamedQuery(name = "ALL", query = "select m  from musicianEntity m order by id,name,family")
 @NamedQuery(name = "findByName", query = "select m from musicianEntity m where m.name like :musicanName order by id,name,family")
@@ -41,22 +42,6 @@ public class Musician extends Artist implements Serializable {
     private String preferredInstrument;
 
 
-    // ======================================
-    // =            Constructors            =
-    // ======================================
-
-//    public Musician() {
-//    }
-//
-//    public Musician(String name, String family, String bio, LocalDate dateOfBirth, String preferredInstrument) {
-//        super(name, family, bio, dateOfBirth);
-//        this.preferredInstrument = preferredInstrument;
-//    }
-//
-//    public Musician(Long id, String name, String family, String bio, LocalDate dateOfBirth, Integer age, String preferredInstrument) {
-//        super(id, name, family, bio, dateOfBirth, age);
-//        this.preferredInstrument = preferredInstrument;
-//    }
 
     // ======================================
     // =          Getters & Setters         =
@@ -75,6 +60,21 @@ public class Musician extends Artist implements Serializable {
     // =    hashcode, equals & toString     =
     // ======================================
 
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+    }
 
     @Override
     public boolean equals(Object o) {

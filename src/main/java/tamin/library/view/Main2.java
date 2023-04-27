@@ -45,7 +45,8 @@ public class Main2 {
         dostoyevskyBooks.add(book3);
 
         fyodorDostoyevsky
-                .setLanguage(Language.RUSSIAN).setBookList(dostoyevskyBooks)
+//                .setLanguage(Language.RUSSIAN)
+                .setBookList(dostoyevskyBooks)
                 .setName("Fyodor").
                 setFamily("Dostoyevsky").
                 setBio("One Of The most Famous Russian's Authors").
@@ -76,7 +77,8 @@ public class Main2 {
         hemingwayBooks.add(book5);
 
         Author ernestHemingway = new Author();
-        ernestHemingway.setLanguage(Language.ENGLISH).setBookList(hemingwayBooks).
+//        ernestHemingway.setLanguage(Language.ENGLISH)
+             ernestHemingway   .setBookList(hemingwayBooks).
                 setName("Ernest").
                 setFamily("Hemingway").
                 setBio("Ernest Miller Hemingway (July 21, 1899 – July 2, 1961) was an American novelist, short-story writer, and journalist").
@@ -85,10 +87,13 @@ public class Main2 {
 
 //        AuthorServices.getAuthorServices().addAuthorAndBooks(hemingwayBooks, ernestHemingway);
 
+        AuthorServices.getInstance().save(ernestHemingway);
+        AuthorServices.getInstance().save(fyodorDostoyevsky);
 
         Set<Musician> metalica = new HashSet<>();
         Musician musician1 = new Musician();
-        musician1.setPreferredInstrument("Piano").setDateOfBirth(LocalDate.of(1978, 8, 23))
+        musician1.setPreferredInstrument("Piano")
+                .setDateOfBirth(LocalDate.of(1978, 8, 23))
                 .setBio("Pianist of the band")
                 .setName("Sara")
                 .setFamily("Ride");
@@ -121,12 +126,13 @@ public class Main2 {
 
 
         CD cd1 = new CD();
-        cd1.setMusicians(metalica).setTitle("Nothing Else Matter")
+        cd1.setGenre("Metal")
+                .setTotalDuration(5.5)
+                .setMusicians(metalica)
+                .setUnitCost(6.3)
+                .setTitle("Nothing Else Matter")
                 .setDescription("Wonderful and the best music of this band")
-                .setGenre("Metal").
-                setUnitCost(150F).
-                setTotalDuration(5.5F);
-//        CdServices.getCdServices().addCdAndMusicianOfTheBand(metalica, cd1);
+                .setUnitCost(150F);
 
 
         Set<Musician> beatles = new HashSet<>();
@@ -161,18 +167,17 @@ public class Main2 {
         beatles.add(musician8);
 
         CD cd2 = new CD();
-        cd2.setMusicians(beatles).setTitle("Sergent Pepper")
-                .setDescription("Best song of their band")
-                .setGenre("Rock").
-                setUnitCost(15.5F).
-                setTotalDuration(8.5F);
+        cd2.setTotalDuration(8.5);
+        cd2.setUnitCost(5.5);
+        cd2.setGenre("Rock");
+        cd2.setDescription("Lovely Song");
+        cd2.setTitle("Sergent Pepper");
 
-//        CdServices.getCdServices().addCdAndMusicianOfTheBand(beatles, cd2);
 
-        CdServices.getCdServices().save(cd1);
-        CdServices.getCdServices().save(cd2);
-        AuthorServices.getAuthorServices().save(ernestHemingway);
-        AuthorServices.getAuthorServices().save(fyodorDostoyevsky);
+
+        CdServices.getInstance().save(cd1);
+        CdServices.getInstance().save(cd2);
+
         System.out.println(MusicianRepository.getInstance().findByName("ra"));
         int age = Period.between(LocalDate.of(1986, 6, 30), LocalDate.now()).getYears();
         System.out.println(age);
@@ -183,7 +188,7 @@ public class Main2 {
                 .setFamily("Jamlai")
                 .setDateOfBirth(LocalDate.of(1986, 6, 30));
 
-        AuthorServices.getAuthorServices().save(yaser);
+        AuthorServices.getInstance().save(yaser);
         System.out.println(yaser);
 
 

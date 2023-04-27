@@ -1,70 +1,64 @@
 package tamin.library.model.service;
 
 
+import com.google.gson.Gson;
 import tamin.library.model.entity.Book;
-import tamin.library.model.repository.AuthorRepository;
 import tamin.library.model.repository.BookRepository;
-import tamin.library.model.service.BL.BookBeanNumberGenerator;
-import tamin.library.model.util.JPA;
+import tamin.library.model.service.BL.IsbnGenerator;
 
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Singleton;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Random;
-@SessionScoped
-@Named
-//@CDIUI("")
-//@Push
+import java.time.LocalDate;
 
+@ApplicationScoped
+@Singleton
 public class BookServices extends Services<Book> implements Serializable {
-    private static  BookServices instance ;
+    private static BookServices instance;
 
-    private BookServices() {
+    private BookServices() {}
 
-    }
-
-    public static BookServices getBookServices() {
-
-            if (instance == null) {
-                synchronized (BookServices.class) {
-                    if (instance == null) {
-                        instance = new BookServices();
-                    }
-                }
-            }
-            ;
-            return instance;
+    public static BookServices getInstance() {
+        if (instance == null) {
+            instance = new BookServices();
         }
+        return instance;
+    }
 
 
     @Override
-    public Book save(Book book) {
-        return BookRepository.getBookRepository().save(book);
-    }
-
-//    @Override
-//    public Book edit(Book book) {
-//        return BookRepository.getBookRepository().edit(book);
-//    }
-
-    @Override
-    public Book remove(Long id) {
-        return BookRepository.getBookRepository().remove(id);
+    public String save(Book book) {
+        return new Gson().toJson(BookRepository.getInstance().save(book));
     }
 
     @Override
-    public Book findById(Long id) {
-        return BookRepository.getBookRepository().findById(id);
+    public String remove(Long id) {
+        return new Gson().toJson(BookRepository.getInstance().remove(id));
     }
 
     @Override
-    public List<Book> findAll() {
-        return BookRepository.getBookRepository().findAll();
+    public String findById(Long id) {
+        return new Gson().toJson(BookRepository.getInstance().findById(id));
     }
 
-  public String isbnGenerator(){
-      return   BookBeanNumberGenerator.getInstance().test();
-  }
+    @Override
+    public String findAll() {
+
+        return new Gson().toJson(listWrap(BookRepository.getInstance().findAll()));
+    }
+
+    public String saveBook(String title, LocalDate publicationDate, String description, Double unitCost, Integer numberOfPages) {
+        Book book = new Book();
+        book.setIsbn(book.getIsbn())
+                .setPublicationDate(publicationDate)
+                .setIsbn(IsbnGenerator.getInstance().numberGenerator())
+                .setNbOfPage(numberOfPages)
+                .setUnitCost(unitCost)
+                .setTitle(title)
+                .setDescription(description);
+        save(book);
+        return new Gson().toJson(book);
+    }
+
+
 }

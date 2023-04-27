@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>AUTHOR</title>
+</head>
+
+
+<body>
+<form action="http://localhost/author/saveAuthor" method="get">
+    <label>
+        <input type="text" name="name" placeholder="First Name" required>
+    </label>
+    <label>
+        <input type="text" name="family" placeholder="Second Name" required>
+    </label>
+
+    <label>
+        <input type="date" name="birthDay" placeholder="Date Of Birth"required>
+    </label>
+    <label>
+        <input type="date" name="deathDay" placeholder="Date Of Death" required>
+    </label>
+    <label>
+        <input type="text" name="bio" placeholder="Author Biography" required>
+    </label>
+
+    <input type="submit">
+</form>
+<form action="http://localhost/author/update" method="get">
+    <label>
+        <input type="number" name="id" placeholder="Author ID" required>
+    </label>
+
+    <label>
+        <input type="text" name="name" placeholder="First Name" required>
+    </label>
+    <label>
+        <input type="text" name="family" placeholder="Second Name" required>
+    </label>
+    <label>
+        <input type="date" name="birthDay" placeholder="Date Of Birth" required>
+    </label>
+    <label>
+        <input type="date" name="deathDay" placeholder="Date Of Death" >
+    </label>
+    <label>
+        <input type="text" name="bio" placeholder="Author Biography" required>
+    </label>
+    <label>
+        <input type="text" name="language" placeholder="Language" required>
+    </label>
+    <input type="submit">
+</form>
+
+<form ACTION= "http://localhost/author/remove">
+
+    <label>
+        <input type="number" name="id" placeholder="Insert The ID">
+    </label>
+    <input type="submit">
+
+
+</form>
+<a href="http://localhost/author/find?token=123abc">Author LIST</a>
+<a href=../test.html>BACK</a>
+</body>
+</html>

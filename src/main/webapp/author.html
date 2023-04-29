@@ -7,6 +7,8 @@
 
 
 <body>
+
+SAVE AUTHOR
 <form action="http://localhost/author/saveAuthor" method="get">
     <label>
         <input type="text" name="name" placeholder="First Name" required>
@@ -14,12 +16,11 @@
     <label>
         <input type="text" name="family" placeholder="Second Name" required>
     </label>
-
     <label>
-        <input type="date" name="birthDay" placeholder="Date Of Birth"required>
+        <input required type="date" name="birthDay" placeholder="Date Of Birth" >
     </label>
     <label>
-        <input type="date" name="deathDay" placeholder="Date Of Death" required>
+        <input type="date" name="deathDay" placeholder="Date Of Death">
     </label>
     <label>
         <input type="text" name="bio" placeholder="Author Biography" required>
@@ -27,6 +28,8 @@
 
     <input type="submit">
 </form>
+
+UPDATE AUTHOR
 <form action="http://localhost/author/update" method="get">
     <label>
         <input type="number" name="id" placeholder="Author ID" required>
@@ -42,27 +45,35 @@
         <input type="date" name="birthDay" placeholder="Date Of Birth" required>
     </label>
     <label>
-        <input type="date" name="deathDay" placeholder="Date Of Death" >
+        <input type="date" name="deathDay" placeholder="Date Of Death">
     </label>
     <label>
         <input type="text" name="bio" placeholder="Author Biography" required>
     </label>
-    <label>
-        <input type="text" name="language" placeholder="Language" required>
-    </label>
+
     <input type="submit">
 </form>
-
-<form ACTION= "http://localhost/author/remove">
+Remove AUTHOR
+<form ACTION="http://localhost/author/remove">
 
     <label>
         <input type="number" name="id" placeholder="Insert The ID">
     </label>
     <input type="submit">
-
-
 </form>
-<a href="http://localhost/author/find?token=123abc">Author LIST</a>
-<a href=../test.html>BACK</a>
+Find An AUTHOR
+<form ACTION="http://localhost/author/find">
+
+    <label>
+        <input name="id" placeholder="Insert The ID" type="number">
+    </label>
+    <input type="submit">
+</form>
+FIND ALL AUTHORS
+<form action="http://localhost/api/author/findAll"></form>
+<a href="http://localhost/author/findAll?token=123abc">Author LIST</a>
+
+<form action="test.html"></form>
+<a href=test.html>BACK</a>
 </body>
 </html>

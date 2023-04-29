@@ -10,18 +10,13 @@ import java.time.LocalDate;
 public class AuthorServices extends Services<Author> {
     private static AuthorServices instance;
 
-
     private AuthorServices() {
 
     }
 
     public static AuthorServices getInstance() {
         if (instance == null) {
-            synchronized (AuthorServices.class) {
-                if (instance == null) {
-                    instance = new AuthorServices();
-                }
-            }
+            instance = new AuthorServices();
         }
         return instance;
     }
@@ -31,19 +26,19 @@ public class AuthorServices extends Services<Author> {
         return new Gson().toJson(AuthorRepository.getInstance().save(author));
     }
 
-//    @Override
-//    public Author edit(Author author) {
-//        return AuthorRepositor.getAuthorRepository().edit(author);
-//    }
-
     @Override
-    public String remove(Long id) {
-        return new Gson().toJson(AuthorRepository.getInstance().remove(id));
+    public Author update(Author author) {
+        return AuthorRepository.getInstance().update(author);
     }
+
 
     @Override
     public String findById(Long id) {
+        if (AuthorRepository.getInstance().findById(id) == null) {
+            return new Gson().toJson("Error:The Author Id Is Not Exist");
+        }
         return new Gson().toJson(AuthorRepository.getInstance().findById(id));
+
     }
 
     @Override
@@ -51,21 +46,31 @@ public class AuthorServices extends Services<Author> {
         return listWrap(AuthorRepository.getInstance().findAll());
     }
 
-    public String update(Long id, String name, String family, LocalDate brithDay, LocalDate deathDay, String bio) {
-        return AuthorRepository.getInstance().updateInstance(id, name, family, brithDay, deathDay, bio);
+    public String updateInstance(Long id, String name, String family, LocalDate brithDay, LocalDate deathDay, String bio) {
+        if (id != null && AuthorRepository.getInstance().findById(id) != null) {
+
+            if (name != null && brithDay != null && deathDay != null && bio != null) {
+                return new Gson().toJson(update(AuthorRepository.getInstance().updateInstance(id, name, family, brithDay, deathDay, bio)));
+            }
+            return new Gson().toJson("Please Fill All Fields");
+        }
+        return new Gson().toJson("Error:The Author Id Is Not Exist");
     }
 
-    public String saveAuthor(String name, String family, LocalDate brithDay, LocalDate deathDay, String bio) {
-        return AuthorRepository.getInstance().saveInstance(name, family, brithDay, deathDay, bio);
+    public String saveInstance(String name, String family, LocalDate brithDay, LocalDate deathDay, String bio) {
+        if (name != null && family != null && bio != null && brithDay != null && deathDay != null) {
+
+            return new Gson().toJson(save(AuthorRepository.getInstance().saveInstance(name, family, brithDay, deathDay, bio)));
+
+        }
+        return new Gson().toJson("The Information are Invalid or incomplete");
     }
 
-    public String removeByID(Long id) {
-        if (AuthorRepository.getInstance().findById(id) != null) {
+    public String remove(Long id) {
+        if (id != null && AuthorRepository.getInstance().findById(id) != null) {
 
-            return new Gson().toJson(AuthorRepository.getInstance().remove(id)+" Is Removed");
+            return new Gson().toJson(AuthorRepository.getInstance().remove(id) + " Is Removed");
         }
         return new Gson().toJson("This ID: " + id + " IS Not Exist");
     }
-
-
 }

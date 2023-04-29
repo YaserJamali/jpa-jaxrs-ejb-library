@@ -11,6 +11,7 @@ public abstract class Services<T> implements AutoCloseable {
     private EntityManager entityManager;
 
     public abstract String save(T t);
+    public abstract T update(T t);
 
 
     public abstract String remove(Long id);

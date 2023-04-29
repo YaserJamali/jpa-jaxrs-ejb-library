@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>BOOK</title>
+</head>
+
+
+<body>
+
+SAVE BOOK
+<form action="http://localhost/book/saveBook" method="get">
+    <label>
+        <input type="text" name="title" placeholder="Book Title" required>
+    </label>
+    <label>
+        <input type="date" name="publicationDate" placeholder="Publication Date" required>
+    </label>
+
+    <label>
+        <input type="text" name="description" placeholder="Description" required>
+    </label>
+    <label>
+        <input type="text" name="unitCost" placeholder="Book Unit Cost">
+    </label>
+    <label>
+        <input type="number" name="numberOfPages" placeholder="Number Of Pages" required>
+    </label>
+
+    <input type="submit">
+</form>
+
+
+UPDATE BOOK
+<form action="http://localhost/book/updateBook" method="get">
+    <label>
+        <input type="number" name="id" placeholder="Book's ID">
+    </label>
+    <label>
+        <input type="text" name="title" placeholder="Book Title" required>
+    </label>
+    <label>
+        <input type="date" name="publicationDate" placeholder="Publication Date" required>
+    </label>
+
+    <label>
+        <input type="text" name="description" placeholder="Description" required>
+    </label>
+    <label>
+        <input type="text" name="unitCost" placeholder="Book Unit Cost">
+    </label>
+    <label>
+        <input type="number" name="numberOfPages" placeholder="Number Of Pages" required>
+    </label>
+
+    <input type="submit">
+</form>
+
+
+SEARCH BOOK BY TITLE
+<form action="http://localhost/book/searchByTitle" method="get">
+    <label>
+        <input type="text" name="title" placeholder="Title Of Book" required>
+    </label>
+
+    <input type="submit">
+</form>
+SEARCH BOOK BY ID
+<form action="http://localhost/book/searchById" method="get">
+    <label>
+        <input type="number" name="id" placeholder="ID Of Book" required>
+    </label>
+
+    <input type="submit">
+</form>
+
+
+SEARCH BOOK BY DATE
+<form action="http://localhost/book/searchByDate" method="get">
+    <label>
+        <input type="date" name="date" placeholder="Date" required>
+    </label>
+
+    <input type="submit">
+</form>
+
+REMOVE BOOK BY ID
+<form action="http://localhost/book/removeById" method="get">
+    <label>
+        <input type="number" name="id" placeholder="ID Of Book" required>
+    </label>
+
+    <input type="submit">
+</form>
+
+RAISE UNIT COST OF BOOK BY ID
+<form action="http://localhost/book/raiseUntCost" method="get">
+    <label>
+        <input type="number" name="id" placeholder="ID Of Book" required>
+    </label>
+    <label>
+        <input type="text" name="raise" placeholder="Raise Coast" required>
+    </label>
+
+    <input type="submit">
+</form>
+
+
+FIND ALL BOOKS
+<form action="http://localhost/api/book/findAll"></form>
+<a href="http://localhost/book/findAll">BOOKS LIST</a>
+
+<form action="test.html"></form>
+<a href=test.html>BACK</a>
+</body>
+</html>

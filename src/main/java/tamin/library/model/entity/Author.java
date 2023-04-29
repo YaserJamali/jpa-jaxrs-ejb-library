@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 
@@ -20,9 +19,9 @@ public class Author extends Artist {
     // ======================================
     // =             Attributes             =
     // ======================================
-//    @Column(columnDefinition = "number(2)")
-//    @Enumerated(EnumType.ORDINAL)
-//    private Language language;
+    @Column(columnDefinition = "number(2)")
+    @Enumerated(EnumType.ORDINAL)
+    private Language language;
     @OneToMany(cascade = PERSIST, fetch = FetchType.EAGER)
     @JoinTable(name = "books_fk",
             joinColumns = @JoinColumn(name = "a_fk"),
@@ -41,14 +40,14 @@ public class Author extends Artist {
     // =          Getters & Setters         =
     // ======================================
 
-//    public Language getLanguage() {
-//        return language;
-//    }
-//
-//    public Author setLanguage(Language language) {
-//        this.language = language;
-//        return this;
-//    }
+    public Language getLanguage() {
+        return language;
+    }
+
+    public Author setLanguage(Language language) {
+        this.language = language;
+        return this;
+    }
 
     public Set<Book> getBookList() {
         return bookList;

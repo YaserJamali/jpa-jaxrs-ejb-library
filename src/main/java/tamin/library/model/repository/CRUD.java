@@ -8,6 +8,7 @@ import java.util.List;
 public abstract class CRUD<T> implements AutoCloseable {
 
     public abstract T save(T t);
+    public abstract T update(T t);
 
     public abstract T remove(Long id);
 

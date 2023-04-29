@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <title>CD</title>
+</head>
+
+
+<body>
+
+SAVE CD
+<form action="http://localhost/cd/saveCd" method="get">
+  <label>
+    <input type="text" name="title" placeholder="title" required>
+  </label>
+  <label>
+    <input type="text" name="description" placeholder="description" required>
+  </label>
+  <label>
+    <input type="text" name="cost" placeholder="unitCost" required>
+  </label>
+  <label>
+    <input type="text" name="duration" placeholder="totalDuration" required>
+  </label>
+  <label>
+    <input type="text" name="genre" placeholder="genre" required>
+  </label>
+  <input type="submit" >
+</form>
+
+
+UPDATE CD
+<form action="http://localhost/cd/updateCd" method="get">
+  <label>
+    <input type="number" name="id" placeholder="CD's ID" >
+  </label>
+  <label>
+    <input type="text" name="title" placeholder="title" required>
+  </label>
+  <label>
+    <input type="text" name="description" placeholder="description" required>
+  </label>
+  <label>
+    <input type="text" name="cost" placeholder="unitCost" required>
+  </label>
+  <label>
+    <input type="text" name="duration" placeholder="totalDuration" required>
+  </label>
+  <label>
+    <input type="text" name="genre" placeholder="genre" required>
+  </label>
+  <input type="submit" >
+</form>
+
+
+
+
+
+
+<!--SEARCH CD BY TITLE-->
+<!--<form action="http://localhost/cd/searchByTitle" method="get">-->
+<!--  <label>-->
+<!--    <input type="text" name="title" placeholder="Title Of Book" required>-->
+<!--  </label>-->
+
+<!--  <input type="submit">-->
+<!--</form>-->
+
+
+SEARCH CD BY ID
+<form action="http://localhost/cd/findCdById" method="get">
+  <label>
+    <input type="number" name="id" placeholder="ID Of CD" required>
+  </label>
+
+  <input type="submit">
+</form>
+
+
+<!--SEARCH BOOK BY DATE-->
+<!--<form action="http://localhost/book/searchByDate" method="get">-->
+<!--  <label>-->
+<!--    <input type="date" name="date" placeholder="Date" required>-->
+<!--  </label>-->
+
+<!--  <input type="submit">-->
+<!--</form>-->
+
+REMOVE CD BY ID
+<form action="http://localhost/cd/removeCdById" method="get">
+  <label>
+    <input type="number" name="id" placeholder="ID Of CD" required>
+  </label>
+
+  <input type="submit">
+</form>
+
+<!--RAISE UNIT COST OF BOOK BY ID-->
+<!--<form action="http://localhost/book/raiseUntCost" method="get">-->
+<!--  <label>-->
+<!--    <input type="number" name="id" placeholder="ID Of Book" required>-->
+<!--  </label>-->
+<!--  <label>-->
+<!--    <input type="text" name="raise" placeholder="Raise Coast" required>-->
+<!--  </label>-->
+
+<!--  <input type="submit">-->
+<!--</form>-->
+
+
+
+
+FIND ALL CDS
+<form action="http://localhost/cd/findAll"></form>
+<a href="http://localhost/cd/findAll">CD LIST</a>
+
+<form action="test.html"></form>
+<a href=test.html>BACK</a>
+</body>
+
+</html>

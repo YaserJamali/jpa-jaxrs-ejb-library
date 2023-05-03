@@ -7,8 +7,8 @@ import java.io.Serializable;
 
 import com.google.gson.Gson;
 import org.hibernate.annotations.NamedQuery;
-import tamin.library.model.service.BL.LifecycleListener;
-import tamin.library.model.service.BL.ValidationListener;
+import tamin.library.service.utiles.LifecycleListener;
+import tamin.library.service.utiles.ValidationListener;
 
 
 @Entity(name = "musicianEntity")
@@ -17,8 +17,8 @@ import tamin.library.model.service.BL.ValidationListener;
 
 })
 @NamedQuery(name = "OLD_MUSICIAN", query = "select m.name,m.family,m.dateOfBirth   from musicianEntity m order by id,name,family")
-@NamedQuery(name = "ALL", query = "select m  from musicianEntity m order by id,name,family")
-@NamedQuery(name = "findByName", query = "select m from musicianEntity m where m.name like :musicanName order by id,name,family")
+@NamedQuery(name = "ALL_MUSICIAN", query = "select m  from musicianEntity m order by id,name,family")
+@NamedQuery(name = "FIND_BY_MUSICIAN_NAME", query = "select m from musicianEntity m where lower(m.name) like lower(:name) order by id")
 @NamedQuery(name = "findByInstrument", query = "select  m.id,m.name,m.family,m.bio" +
         " from  musicianEntity m  " +
         "where lower(m.preferredInstrument)" +
@@ -27,19 +27,20 @@ import tamin.library.model.service.BL.ValidationListener;
 @DiscriminatorValue("MUSICIAN")
 public class Musician extends Artist implements Serializable {
 
-
-    // ======================================
-    // =             NAMED-QUERIES             =
-    // ======================================
-    public final static String FIND_BY_NAME = "findByName";
-
-
     // ======================================
     // =             Attributes             =
     // ======================================
 
     @Column(name = "preferred_instrument", columnDefinition = "nvarchar2(30)")
     private String preferredInstrument;
+
+
+
+    // ======================================
+    // =             NAMED-QUERIES          =
+    // ======================================
+    public final static String FIND_MUSICIAN_NAME = "FIND_BY_MUSICIAN_NAME";
+    public final static String FIND_ALL_MUSICIAN = "ALL_MUSICIAN";
 
 
 

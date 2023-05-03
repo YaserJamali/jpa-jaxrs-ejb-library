@@ -1,8 +1,10 @@
-package tamin.library.controller.api;
+package tamin.library.controller;
 
 import com.google.gson.Gson;
-import tamin.library.model.service.MusicianServices;
+import tamin.library.service.MusicianServices;
 
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -11,7 +13,17 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 @Path("/musician")
-public class MusicianApi {
+@Stateless
+public class MusicianController {
+
+
+    @Inject
+    private MusicianServices services;
+
+
+    public MusicianController() {
+        services = MusicianServices.getInstance();
+    }
 
     @GET
     @Path("saveMusician")
@@ -21,12 +33,11 @@ public class MusicianApi {
             @QueryParam("family") String family,
             @QueryParam("bio") String bio,
             @QueryParam("birthDay") String birthDay,
-            @QueryParam("deathDay") String deathDay,
             @QueryParam("preferredInstrument") String preferredInstrument
     ) {
         try {
-            return MusicianServices.getInstance().
-                    saveInstance(name, family, bio, LocalDate.parse(birthDay), LocalDate.parse(deathDay), preferredInstrument);
+            return services.
+                    saveInstance(name, family, bio, LocalDate.parse(birthDay), preferredInstrument);
         } catch (DateTimeParseException e) {
             return new Gson().toJson("Please Give A Valid Date Time " + e.getMessage());
         }
@@ -41,15 +52,22 @@ public class MusicianApi {
             @QueryParam("family") String family,
             @QueryParam("bio") String bio,
             @QueryParam("birthDay") String birthDay,
-            @QueryParam("deathDay") String deathDay,
             @QueryParam("preferredInstrument") String preferredInstrument
     ) {
         try {
-            return MusicianServices.getInstance().
-                    updateInstance(id, name, family, bio, LocalDate.parse(birthDay), LocalDate.parse(deathDay), preferredInstrument);
+            return services.
+                    updateInstance(id, name, family, bio, LocalDate.parse(birthDay), preferredInstrument);
         } catch (DateTimeParseException e) {
             return new Gson().toJson("Please Give A Valid Date Time " + e.getMessage());
         }
+    }
+
+
+    @GET
+    @Produces("application/json")
+    @Path("/search_name")
+    public String findByName(@QueryParam("name") String name) {
+        return services.findByName(name);
     }
 
     @GET
@@ -57,7 +75,14 @@ public class MusicianApi {
     @Path("/searchById")
     public String findById(@QueryParam("id") Long id) {
 
-        return MusicianServices.getInstance().findById(id);
+        return services.findById(id);
+    }
+
+    @GET
+    @Produces("application/json")
+    @Path("/findAll")
+    public String findAll() {
+        return services.findAll();
     }
 
     @GET
@@ -65,22 +90,7 @@ public class MusicianApi {
     @Path("/removeById")
     public String removeById(@QueryParam("id") Long id) {
 
-        return MusicianServices.getInstance().remove(id);
+        return services.remove(id);
     }
-
-    @GET
-    @Produces("application/json")
-    @Path("/searchByName")
-    public String findByName(@QueryParam("name") String name) {
-        return MusicianServices.getInstance().findByName(name);
-    }
-
-    @GET
-    @Produces("application/json")
-    @Path("/findAll")
-    public String findAll() {
-        return MusicianServices.getInstance().findAll();
-    }
-
 
 }

@@ -1,17 +1,15 @@
 package tamin.library.model.entity;
-
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import org.hibernate.annotations.NamedQuery;
+import javax.persistence.*;
 import javax.validation.constraints.Past;
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity(name = "bookEntity")
 @Table(name = "book_table")
-@DiscriminatorValue("BOOK") //its work with @Entity Annotations
-//@JoinTable(name = Book_artist,)
+@DiscriminatorValue("BOOK")
+@NamedQuery(name = "FIND_BY_BOOK_TITLE", query = "select b from bookEntity b where lower(b.title) like lower(:bookTitle) order by id")
+@NamedQuery(name = "ALL_BOOKS", query = "select b  from bookEntity b order by id,title")
 public class Book extends Item {
 
     // ======================================
@@ -28,9 +26,22 @@ public class Book extends Item {
     private LocalDate publicationDate;
 
     // ======================================
+    // =             NAMED-QUERIES          =
+    // ======================================
+    public final static String FIND_BY_TITLE = "FIND_BY_BOOK_TITLE";
+    public final static String FIND_ALL_BOOKS = "ALL_BOOKS";
+
+
+    // ======================================
     // =            Constructors            =
     // ======================================
-
+@PrePersist
+@PreUpdate
+public void validate(){
+    System.out.println(".DataValidationListener validate()");
+    if (getTitle() == null || "".equals(getTitle()))
+        throw new IllegalArgumentException("Invalid Title name");
+}
 
     // ======================================
     // =          Getters & Setters         =

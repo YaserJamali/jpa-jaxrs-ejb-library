@@ -1,6 +1,7 @@
 package tamin.library.model.entity;
 
 import com.google.gson.Gson;
+import tamin.library.service.utiles.LifecycleListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -10,7 +11,8 @@ import java.util.Objects;
 //@MappedSuperclass
 @Entity(name = "itemtEntity")
 @Table(name = "ITEM_TABLE")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@EntityListeners({ LifecycleListener.class})
 @DiscriminatorColumn(name = "DISK", discriminatorType = DiscriminatorType.STRING) //its work with @Entity Annotations
 @DiscriminatorValue("BASE") //its work with @Entity Annotations
 public abstract class Item {

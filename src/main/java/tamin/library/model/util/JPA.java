@@ -1,30 +1,22 @@
 package tamin.library.model.util;
 
+import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 
-public class JPA {
-    // private static   JPA instance=new JPA();
-//    private static EntityManagerFactory factory =
-//            Persistence.createEntityManagerFactory("JPA-LIBRARY");
-//    private JPA(){
-//
-//    }
-//
-//    public static JPA getJpa() {
-//        return instance;
-//    }
-//    public  EntityManager getConnection(){
-//      return factory.createEntityManager();
-//
-//    }
+public class JPA implements AutoCloseable {
     private static JPA instance;
 
-    private static final EntityManagerFactory factory =
-            Persistence.createEntityManagerFactory("JPA");
+
+    @PersistenceContext
+    @Produces
+    private final EntityManagerFactory factory;
+
 
     private JPA() {
+        factory = Persistence.createEntityManagerFactory("JPA");
     }
 
 
@@ -36,7 +28,6 @@ public class JPA {
                 }
             }
         }
-        ;
         return instance;
     }
 
@@ -45,9 +36,9 @@ public class JPA {
 
     }
 
-//  @Override
-//  public void close() throws Exception {
-//    factory.close();
-//  }
+    @Override
+    public void close()  {
+        factory.close();
+    }
 }
 

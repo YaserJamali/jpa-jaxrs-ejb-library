@@ -1,21 +1,20 @@
 package tamin.library.model.entity;
 
 import com.google.gson.Gson;
-import tamin.library.model.service.BL.AgeCalculationListener;
-import tamin.library.model.service.BL.ValidationListener;
+import tamin.library.service.utiles.AgeCalculationListener;
+import tamin.library.service.utiles.LifecycleListener;
+import tamin.library.service.utiles.ValidationListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Objects;
 
 //@MappedSuperclass
 @Entity(name = "artistEntity")
 @Table(name = "ARTIST_TABLE")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@EntityListeners({AgeCalculationListener.class, ValidationListener.class})
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@EntityListeners({AgeCalculationListener.class, ValidationListener.class, LifecycleListener.class})
 @DiscriminatorColumn(name = "ARTIST", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("PERSON")
 
@@ -51,8 +50,7 @@ public abstract class Artist {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-    @Column(name = "date_of_death")
-    private LocalDate dateOfDeath;
+
 
     @Transient
     @Column(name = "AGE")
@@ -126,35 +124,28 @@ public abstract class Artist {
         return this;
     }
 
-    public LocalDate getDateOfDeath() {
-        return dateOfDeath;
-    }
 
-    public Artist setDateOfDeath(LocalDate dateOfDeath) {
-        this.dateOfDeath = dateOfDeath;
-        return this;
-    }
 // ======================================
     // =    hashcode, equals & toString     =
     // ======================================
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Artist)) return false;
-        Artist artist = (Artist) o;
-        return Objects.equals(getId(), artist.getId()) && Objects.equals(getName(), artist.getName()) &&
-                Objects.equals(getFamily(), artist.getFamily()) &&
-                Objects.equals(getBio(), artist.getBio()) &&
-                Objects.equals(getDateOfBirth(), artist.getDateOfBirth()) &&
-                Objects.equals(getAge(), artist.getAge());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getFamily(), getBio(), getDateOfBirth(), getAge());
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (!(o instanceof Artist)) return false;
+//        Artist artist = (Artist) o;
+//        return Objects.equals(getId(), artist.getId()) && Objects.equals(getName(), artist.getName()) &&
+//                Objects.equals(getFamily(), artist.getFamily()) &&
+//                Objects.equals(getBio(), artist.getBio()) &&
+//                Objects.equals(getDateOfBirth(), artist.getDateOfBirth()) &&
+//                Objects.equals(getAge(), artist.getAge());
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(getId(), getName(), getFamily(), getBio(), getDateOfBirth(), getAge());
+//    }
 
     @Override
     public String toString() {

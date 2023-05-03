@@ -2,19 +2,25 @@ package tamin.library.model.entity;
 
 
 import com.google.gson.Gson;
+import org.hibernate.annotations.NamedQuery;
+import tamin.library.service.utiles.LifecycleListener;
+import tamin.library.service.utiles.ValidationListener;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-
 
 import static javax.persistence.CascadeType.PERSIST;
 
 @Entity(name = "authorEntity")
 @Table(name = "author_table")
 @DiscriminatorValue("AUTHOR")
+@EntityListeners({
+        ValidationListener.class, LifecycleListener.class
+})
+@NamedQuery(name = "FIND_BY_AUTHOR_NAME", query = "select a from authorEntity a where lower(a.name) like lower(:name) order by id,name,family")
+@NamedQuery(name = "ALL_AUTHORS", query = "select a  from authorEntity a order by id,name,family")
 public class Author extends Artist {
-
 
     // ======================================
     // =             Attributes             =
@@ -23,17 +29,21 @@ public class Author extends Artist {
     @Enumerated(EnumType.ORDINAL)
     private Language language;
     @OneToMany(cascade = PERSIST, fetch = FetchType.EAGER)
-    @JoinTable(name = "books_fk",
-            joinColumns = @JoinColumn(name = "a_fk"),
-            inverseJoinColumns = @JoinColumn(name = "b_fk"))
+    @JoinTable(name = "author_books_JOIN",
+            joinColumns = @JoinColumn(name = "AUTHOR_fk"),
+            inverseJoinColumns = @JoinColumn(name = "BOOK_fk"))
     private Set<Book> bookList = new HashSet<>();
+
+    // ======================================
+    // =             NAMED-QUERIES          =
+    // ======================================
+    public final static String FIND_AUTHOR_NAME = "FIND_BY_AUTHOR_NAME";
+    public final static String FIND_ALL_AUTHORS = "ALL_AUTHORS";
+
 
     // ======================================
     // =     Lifecycle Callback Methods     =
     // ======================================
-
-
-
 
 
     // ======================================

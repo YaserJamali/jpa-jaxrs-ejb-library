@@ -1,7 +1,7 @@
 package tamin.library.model.entity;
 
 import com.google.gson.Gson;
-
+import org.hibernate.annotations.NamedQuery;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
@@ -11,7 +11,9 @@ import static javax.persistence.CascadeType.PERSIST;
 
 @Entity(name = "cdEntity")
 @Table(name = "cd_table")
-@DiscriminatorValue("CD") //its work with @Entity Annotations
+@DiscriminatorValue("CD")
+@NamedQuery(name = "FIND_BY_CD_TITLE", query = "select c from cdEntity c where lower(c.title) like lower(:title) order by id ")
+@NamedQuery(name = "ALL_CD", query = "select c  from cdEntity c order by id,title")
 public class CD extends Item {
 
     // ======================================
@@ -23,9 +25,18 @@ public class CD extends Item {
     private String genre;
 
     @OneToMany(cascade = PERSIST, fetch = FetchType.EAGER)
-    @JoinTable(name = "CD_FK")
+    @JoinTable(name = "CD_MUSICIAN_JOIN",
+            joinColumns = @JoinColumn(name = "CD_fk"),
+            inverseJoinColumns = @JoinColumn(name = "MUSICIAN_fk"))
 
     private Set<Musician> musicians = new HashSet<>();
+
+
+    // ======================================
+    // =             NAMED-QUERIES          =
+    // ======================================
+    public final static String FIND_BY_TITLE = "FIND_BY_CD_TITLE";
+    public final static String FIND_ALL_CD = "ALL_CD";
 
 
     // ======================================

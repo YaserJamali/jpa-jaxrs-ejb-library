@@ -54,7 +54,14 @@ UPDATE CD
 
 
 
+SEARCH CD BY TITLE
+<form action="http://localhost/cd/search_title" method="get">
+  <label>
+    <input type="text" name="title" placeholder="Title Of Book" required>
+  </label>
 
+  <input type="submit">
+</form>
 
 
 <!--SEARCH CD BY TITLE-->
@@ -77,14 +84,17 @@ SEARCH CD BY ID
 </form>
 
 
-<!--SEARCH BOOK BY DATE-->
-<!--<form action="http://localhost/book/searchByDate" method="get">-->
-<!--  <label>-->
-<!--    <input type="date" name="date" placeholder="Date" required>-->
-<!--  </label>-->
+ADD MUSICIAN TO CD
+<form ACTION="http://localhost/cd/add-musician-to-cd">
 
-<!--  <input type="submit">-->
-<!--</form>-->
+  <label>
+    <input name="cdId" placeholder="Insert CD ID" type="number">
+  </label>
+  <label>
+    <input name="musicianId" placeholder="Insert MUSICIAN ID" type="number">
+  </label>
+  <input type="submit">
+</form>
 
 REMOVE CD BY ID
 <form action="http://localhost/cd/removeCdById" method="get">
@@ -95,18 +105,17 @@ REMOVE CD BY ID
   <input type="submit">
 </form>
 
-<!--RAISE UNIT COST OF BOOK BY ID-->
-<!--<form action="http://localhost/book/raiseUntCost" method="get">-->
-<!--  <label>-->
-<!--    <input type="number" name="id" placeholder="ID Of Book" required>-->
-<!--  </label>-->
-<!--  <label>-->
-<!--    <input type="text" name="raise" placeholder="Raise Coast" required>-->
-<!--  </label>-->
+RAISE UNIT COST OF CD BY ID
+<form action="http://localhost/cd/raiseUntCost" method="get">
+  <label>
+    <input type="number" name="id" placeholder="ID Of Book" required>
+  </label>
+  <label>
+    <input type="text" name="raise" placeholder="Raise Coast" required>
+  </label>
 
-<!--  <input type="submit">-->
-<!--</form>-->
-
+  <input type="submit">
+</form>
 
 
 
@@ -115,7 +124,7 @@ FIND ALL CDS
 <a href="http://localhost/cd/findAll">CD LIST</a>
 
 <form action="test.html"></form>
-<a href=test.html>BACK</a>
+<a href=test.html>MAIN MENU</a>
 </body>
 
 </html>

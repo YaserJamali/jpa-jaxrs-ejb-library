@@ -1,4 +1,4 @@
-package tamin.library.model.service.BL;
+package tamin.library.service.utiles;
 
 
 import tamin.library.model.entity.Artist;
@@ -13,12 +13,18 @@ public class ValidationListener {
 
     @PrePersist
     @PreUpdate
-    private void validate(Artist artist) {
+    private void validateArtist(Artist artist) {
         System.out.println(".DataValidationListener validate()");
         if (artist.getName() == null || "".equals(artist.getName()))
             throw new IllegalArgumentException("Invalid first name");
         if (artist.getFamily() == null || "".equals(artist.getFamily()))
             throw new IllegalArgumentException("Invalid last name");
+
     }
+
+
+
+
+
 
 }

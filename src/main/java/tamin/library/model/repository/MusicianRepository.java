@@ -4,34 +4,47 @@ package tamin.library.model.repository;
 import tamin.library.model.entity.Musician;
 import tamin.library.model.util.JPA;
 
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.time.LocalDate;
-import java.time.Period;
+import javax.transaction.Transactional;
 import java.util.List;
 
-public class MusicianRepository extends CRUD<Musician> {
+@Singleton
+public class MusicianRepository extends CRUD<Musician, String, Long> {
+
     private static MusicianRepository instance;
 
-    private MusicianRepository() {
+    @Inject
+    private EntityManager manager;
 
+    @PersistenceContext
+    @Produces
+    private EntityTransaction transaction;
+
+    @Inject
+    private JPA jpa;
+
+    private MusicianRepository() {
+        jpa = JPA.getInstance();
     }
 
     public static MusicianRepository getInstance() {
-
         if (instance == null) {
             instance = new MusicianRepository();
         }
-
         return instance;
     }
 
-
     @Override
+    @Transactional
     public Musician save(Musician musician) {
-        EntityManager manager = JPA.getInstance().getEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
+        manager = jpa.getEntityManager();
+        transaction = manager.getTransaction();
         transaction.begin();
         manager.persist(musician);
         transaction.commit();
@@ -40,9 +53,10 @@ public class MusicianRepository extends CRUD<Musician> {
     }
 
     @Override
+    @Transactional
     public Musician update(Musician musician) {
-        EntityManager manager = JPA.getInstance().getEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
+        manager = jpa.getEntityManager();
+        transaction = manager.getTransaction();
         transaction.begin();
         manager.merge(musician);
         transaction.commit();
@@ -50,24 +64,22 @@ public class MusicianRepository extends CRUD<Musician> {
         return musician;
     }
 
-
     @Override
-    public Musician remove(Long id) {
-        EntityManager manager = JPA.getInstance().getEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
-        transaction.begin();
-        Musician musician = manager.find(Musician.class, id);
-        if (musician != null) {
-            manager.remove(musician);
-            transaction.commit();
-            manager.close();
-            return musician;
-        } else return null;
+    public List<Musician> findByName(String name1) {
+        manager = jpa.getEntityManager();
+        TypedQuery<Musician> query = manager.createNamedQuery(Musician.FIND_MUSICIAN_NAME, Musician.class);
+        query.setParameter("name", "%" + name1 + "%");
+        List<Musician> list = query.getResultList();
+        manager.close();
+        return list;
     }
+
+
+
 
     @Override
     public Musician findById(Long id) {
-        EntityManager manager = JPA.getInstance().getEntityManager();
+        manager = JPA.getInstance().getEntityManager();
         Musician musician = manager.find(Musician.class, id);
         manager.close();
         return musician;
@@ -75,43 +87,23 @@ public class MusicianRepository extends CRUD<Musician> {
 
     @Override
     public List<Musician> findAll() {
-        EntityManager manager = JPA.getInstance().getEntityManager();
-        TypedQuery<Musician> query = manager.createQuery("select musicians from musicianEntity musicians order by id", Musician.class);
+        manager = jpa.getEntityManager();
+        TypedQuery<Musician> query = manager.createNamedQuery(Musician.FIND_ALL_MUSICIAN, Musician.class);
         List<Musician> musicianList = query.getResultList();
         manager.close();
         return musicianList;
     }
 
-
-    public List<Musician> findByName(String name) {
-        EntityManager manager = JPA.getInstance().getEntityManager();
-        TypedQuery<Musician> query = manager.createNamedQuery(Musician.FIND_BY_NAME, Musician.class);
-        query.setParameter("musicanName", "%" + name + "%");
-        List<Musician> list = query.getResultList();
+    @Override
+    @Transactional
+    public Musician remove(Long id) {
+        manager = jpa.getEntityManager();
+        transaction = manager.getTransaction();
+        transaction.begin();
+        Musician musician = manager.find(Musician.class, id);
+        manager.remove(musician);
+        transaction.commit();
         manager.close();
-        return list;
-    }
-
-    public Musician saveInstance(String name, String family, String bio, LocalDate dateOfBirth, LocalDate dateOfDeath, String preferredInstrument) {
-        Musician musician = new Musician();
-        musician.setPreferredInstrument(preferredInstrument)
-                .setDateOfDeath(dateOfDeath)
-                .setName(name)
-                .setFamily(family)
-                .setBio(bio)
-                .setDateOfBirth(dateOfBirth);
-        return musician;
-    }
-
-    public Musician updateInstance(Long id, String name, String family, String bio, LocalDate brithDay, LocalDate deathDay, String preferredInstrument) {
-        Musician musician = findById(id);
-        musician.setPreferredInstrument(preferredInstrument)
-                .setDateOfDeath(deathDay)
-                .setName(name)
-                .setFamily(family)
-                .setBio(bio)
-                .setDateOfBirth(brithDay)
-                .setAge(Period.between(brithDay, deathDay).getYears());
         return musician;
     }
 

@@ -2,23 +2,33 @@ package tamin.library.model.repository;
 
 
 import tamin.library.model.entity.Book;
-import tamin.library.model.service.BL.IsbnGenerator;
 import tamin.library.model.util.JPA;
 
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
 @Singleton
-public class BookRepository extends CRUD<Book> {
+public class BookRepository extends CRUD<Book, String, Long> {
     private static BookRepository instance;
 
-    private BookRepository() {
 
+    @Inject
+    private EntityManager manager;
+
+    @PersistenceContext
+    @Produces
+    private EntityTransaction transaction;
+
+    @Inject
+    private JPA jpa;
+
+    private BookRepository() {
+        jpa = JPA.getInstance();
     }
 
 
@@ -30,9 +40,10 @@ public class BookRepository extends CRUD<Book> {
     }
 
     @Override
+    @Transactional
     public Book save(Book book) {
-        EntityManager manager = JPA.getInstance().getEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
+        manager = jpa.getEntityManager();
+        transaction = manager.getTransaction();
         transaction.begin();
         manager.persist(book);
         transaction.commit();
@@ -42,9 +53,10 @@ public class BookRepository extends CRUD<Book> {
     }
 
     @Override
+    @Transactional
     public Book update(Book book) {
-        EntityManager manager = JPA.getInstance().getEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
+        manager = JPA.getInstance().getEntityManager();
+        transaction = manager.getTransaction();
         transaction.begin();
         manager.merge(book);
         transaction.commit();
@@ -52,11 +64,41 @@ public class BookRepository extends CRUD<Book> {
         return book;
 
     }
+    @Override
+    public List<Book> findByName(String name) {
+        manager = jpa.getEntityManager();
+        TypedQuery<Book> query = manager.createNamedQuery(Book.FIND_BY_TITLE, Book.class);
+        query.setParameter("bookTitle", "%" + name + "%");
+        List<Book> list = query.getResultList();
+        manager.close();
+        return list;
+    }
+
 
     @Override
+    public Book findById(Long id) {
+        manager = jpa.getEntityManager();
+        Book book = manager.find(Book.class, id);
+        manager.close();
+        return book;
+    }
+
+    @Override
+    public List<Book> findAll() {
+        manager = jpa.getEntityManager();
+        TypedQuery<Book> query = manager.createNamedQuery(Book.FIND_ALL_BOOKS, Book.class);
+        List<Book> list = query.getResultList();
+        manager.close();
+        return list;
+    }
+
+
+
+    @Override
+    @Transactional
     public Book remove(Long id) {
-        EntityManager manager = JPA.getInstance().getEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
+        manager = jpa.getEntityManager();
+        transaction = manager.getTransaction();
         transaction.begin();
         Book book = manager.find(Book.class, id);
         manager.remove(book);
@@ -66,26 +108,9 @@ public class BookRepository extends CRUD<Book> {
 
     }
 
-    @Override
-    public Book findById(Long id) {
-        EntityManager manager = JPA.getInstance().getEntityManager();
-        Book book = manager.find(Book.class, id);
-        manager.close();
-        return book;
-    }
-
-    @Override
-    public List<Book> findAll() {
-        EntityManager manager = JPA.getInstance().getEntityManager();
-        Query query = manager.createQuery("select b from bookEntity b ");
-        List<Book> bookList = query.getResultList();
-        manager.close();
-        return bookList;
-    }
-
-    public Book raiseUnitCost(long id, double raise) {
-        EntityManager manager = JPA.getInstance().getEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
+    public Book raiseUnitCost(Long id, Double raise) {
+        manager = jpa.getEntityManager();
+        transaction = manager.getTransaction();
         transaction.begin();
         Book book = manager.find(Book.class, id);
         book.setUnitCost(book.getUnitCost() + raise);
@@ -95,23 +120,6 @@ public class BookRepository extends CRUD<Book> {
 
     }
 
-    public List<Book> findBookByTitle(String title1) {
-        EntityManager manager = JPA.getInstance().getEntityManager();
-        Query query = manager.createQuery("select b from bookEntity b where  lower(title) like ?1 order by id", Book.class);
-        query.setParameter(1, "%" + title1);
-        List<Book> bookList = query.getResultList();
-        return bookList;
-
-    }
-//    public Book removeByTitle(String title1) {
-//        EntityManager manager = JPA.getInstance().getEntityManager();
-//        Query query = manager.createQuery("select b from bookEntity b where  lower(title) =?1 order by id", Book.class);
-//     query.setParameter(1, "%"+title1);
-//
-//       manager.remove(query);
-//        return query;
-//
-//    }
 
     public List<Book> findByDate(LocalDate date) {
         EntityManager manager = JPA.getInstance().getEntityManager();
@@ -124,33 +132,5 @@ public class BookRepository extends CRUD<Book> {
         manager.close();
         return list;
     }
-
-
-    public Book saveInstance(String title, LocalDate publicationDate, String description, Double unitCost, Integer numberOfPages) {
-        Book book = new Book();
-        book.setIsbn(book.getIsbn())
-                .setPublicationDate(publicationDate)
-                .setIsbn(IsbnGenerator.getInstance().numberGenerator())
-                .setNbOfPage(numberOfPages)
-                .setUnitCost(unitCost)
-                .setTitle(title)
-                .setDescription(description);
-        return book;
-    }
-
-    public Book updateInstance(Long id, String title, LocalDate publicationDate, String description, Double unitCost, Integer numberOfPages) {
-        Book book = findById(id);
-        book.setIsbn(book.getIsbn())
-                .setPublicationDate(publicationDate)
-                .setIsbn(IsbnGenerator.getInstance().numberGenerator())
-                .setNbOfPage(numberOfPages)
-                .setUnitCost(unitCost)
-                .setTitle(title)
-                .setDescription(description);
-
-        return book;
-
-    }
-
 
 }

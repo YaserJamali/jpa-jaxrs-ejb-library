@@ -4,17 +4,31 @@ package tamin.library.model.repository;
 import tamin.library.model.entity.CD;
 import tamin.library.model.util.JPA;
 
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Singleton
-public class CdRepository extends CRUD<CD> {
+public class CdRepository extends CRUD<CD, String, Long> {
     private static CdRepository instance;
+    @Inject
+    private EntityManager manager;
+
+    @PersistenceContext
+    @Produces
+    private EntityTransaction transaction;
+
+    @Inject
+    private JPA jpa;
 
     private CdRepository() {
+        jpa = JPA.getInstance();
     }
 
     public static CdRepository getInstance() {
@@ -25,9 +39,10 @@ public class CdRepository extends CRUD<CD> {
     }
 
     @Override
+    @Transactional
     public CD save(CD cd) {
-        EntityManager manager = JPA.getInstance().getEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
+        manager = jpa.getEntityManager();
+        transaction = manager.getTransaction();
         transaction.begin();
         manager.persist(cd);
         transaction.commit();
@@ -36,9 +51,10 @@ public class CdRepository extends CRUD<CD> {
     }
 
     @Override
+    @Transactional
     public CD update(CD cd) {
-        EntityManager manager = JPA.getInstance().getEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
+        manager = jpa.getEntityManager();
+        transaction = manager.getTransaction();
         transaction.begin();
         manager.merge(cd);
         transaction.commit();
@@ -47,9 +63,38 @@ public class CdRepository extends CRUD<CD> {
     }
 
     @Override
+    public List<CD> findByName(String title) {
+        manager = jpa.getEntityManager();
+        TypedQuery<CD> query = manager.createNamedQuery(CD.FIND_BY_TITLE, CD.class);
+        query.setParameter("title", "%" + title + "%");
+        List<CD> list = query.getResultList();
+        manager.close();
+        return list;
+    }
+
+    @Override
+    public CD findById(Long id) {
+        manager = JPA.getInstance().getEntityManager();
+        CD cd = manager.find(CD.class, id);
+        manager.close();
+        return cd;
+    }
+
+    @Override
+    public List<CD> findAll() {
+        manager = jpa.getEntityManager();
+        TypedQuery<CD> query = manager.createNamedQuery(CD.FIND_ALL_CD, CD.class);
+        List<CD> list = query.getResultList();
+        manager.close();
+        return list;
+    }
+
+
+    @Override
+    @Transactional
     public CD remove(Long id) {
-        EntityManager manager = JPA.getInstance().getEntityManager();
-        EntityTransaction transaction = manager.getTransaction();
+        manager = jpa.getEntityManager();
+        transaction = manager.getTransaction();
         transaction.begin();
         CD cd = manager.find(CD.class, id);
         manager.remove(cd);
@@ -58,59 +103,14 @@ public class CdRepository extends CRUD<CD> {
         return cd;
     }
 
-    @Override
-    public CD findById(Long id) {
-        EntityManager manager = JPA.getInstance().getEntityManager();
+    public CD raiseUnitCost(Long id, Double raise) {
+        manager = jpa.getEntityManager();
+        transaction = manager.getTransaction();
+        transaction.begin();
         CD cd = manager.find(CD.class, id);
+        cd.setUnitCost(cd.getUnitCost() + raise);
+        transaction.commit();
         manager.close();
-        return cd;
-    }
-
-    @Override
-    public List<CD> findAll() {
-        EntityManager manager = JPA.getInstance().getEntityManager();
-
-        Query query = manager.createQuery("select c from cdEntity c ");
-//                " inner join bookEntity b ");
-//                " ,musicianEntity m ,CD_FK cd where " +
-//                "c.id=cd.cdentity_id and m.id=cd.musicians_id_artist" );
-        List<CD> cdList = query.getResultList();
-        manager.close();
-        return cdList;
-    }
-
-//    public CD addCdAndMusicianOfTheBand(Set<Musician> musicians, CD musicName) {
-//        EntityManager manager = JPA.getInstance().getEntityManager();
-//        EntityTransaction transaction = manager.getTransaction();
-//        transaction.begin();
-//        // CD cd= save(musicName);
-//        //   CD cd=new CD();
-//        musicName.setMusicians(musicians);
-//        save(musicName);
-//        transaction.commit();
-//        manager.close();
-//        return musicName;
-//
-//    }
-
-    public CD saveInstance(String title, String description, Double unitCost, Double totalDuration, String genre) {
-        CD cd = new CD();
-        cd.setTotalDuration(totalDuration);
-        cd.setGenre(genre);
-        cd.setTitle(title);
-        cd.setDescription(description);
-        cd.setUnitCost(unitCost);
-        return cd;
-
-    }
-
-    public CD updateInstance(Long id, String title, String description, Double unitCost, Double totalDuration, String genre) {
-        CD cd = findById(id);
-        cd.setTotalDuration(totalDuration);
-        cd.setGenre(genre);
-        cd.setTitle(title);
-        cd.setDescription(description);
-        cd.setUnitCost(unitCost);
         return cd;
 
     }

@@ -24,9 +24,6 @@ SAVE MUSICIAN
         <input type="date" name="birthDay" placeholder="Date Of Birth" required>
     </label>
     <label>
-        <input type="date" name="deathDay" placeholder="Date Of Death">
-    </label>
-    <label>
         <input type="text" name="preferredInstrument" placeholder="Preferred Instrument" required>
     </label>
 
@@ -52,10 +49,16 @@ UPDATE MUSICIAN
         <input type="date" name="birthDay" placeholder="Date Of Birth" required>
     </label>
     <label>
-        <input type="date" name="deathDay" placeholder="Date Of Death">
-    </label>
-    <label>
         <input type="text" name="preferredInstrument" placeholder="preferredInstrument" required>
+    </label>
+
+    <input type="submit">
+</form>
+
+SEARCH MUSICIAN BY NAME
+<form action="http://localhost/musician/search_name" method="get">
+    <label>
+        <input type="text" name="name" placeholder="Name Of Musician" required>
     </label>
 
     <input type="submit">
@@ -89,51 +92,12 @@ FIND MUSICIAN BY NAME
 </form>
 
 
-<!--UPDATE AUTHOR-->
-<!--<form action="http://localhost/author/update" method="get">-->
-<!--    <label>-->
-<!--        <input type="number" name="id" placeholder="Author ID" required>-->
-<!--    </label>-->
 
-<!--    <label>-->
-<!--        <input type="text" name="name" placeholder="First Name" required>-->
-<!--    </label>-->
-<!--    <label>-->
-<!--        <input type="text" name="family" placeholder="Second Name" required>-->
-<!--    </label>-->
-<!--    <label>-->
-<!--        <input type="date" name="brithDay" placeholder="Date Of Birth" required>-->
-<!--    </label>-->
-<!--    <label>-->
-<!--        <input type="date" name="deathDay" placeholder="Date Of Death">-->
-<!--    </label>-->
-<!--    <label>-->
-<!--        <input type="text" name="bio" placeholder="Author Biography" required>-->
-<!--    </label>-->
-
-<!--    <input type="submit">-->
-<!--</form>-->
-<!--Remove AUTHOR-->
-<!--<form ACTION="http://localhost/author/remove">-->
-
-<!--    <label>-->
-<!--        <input type="number" name="id" placeholder="Insert The ID">-->
-<!--    </label>-->
-<!--    <input type="submit">-->
-<!--</form>-->
-<!--Find An AUTHOR-->
-<!--<form ACTION="http://localhost/author/find">-->
-
-<!--    <label>-->
-<!--        <input name="id" placeholder="Insert The ID" type="number">-->
-<!--    </label>-->
-<!--    <input type="submit">-->
-<!--</form>-->
 FIND ALL MUSICIANS
 <form action="http://localhost/musician/findAll"></form>
 <a href="http://localhost/musician/findAll">MUSICIAN LIST</a>
 
 <form action="test.html"></form>
-<a href=test.html>BACK</a>
+<a href=test.html>MAIN MENU</a>
 </body>
 </html>

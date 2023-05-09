@@ -87,12 +87,6 @@ public class Musician extends Artist {
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
-
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

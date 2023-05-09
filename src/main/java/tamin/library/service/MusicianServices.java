@@ -37,7 +37,7 @@ public class MusicianServices implements Services<Musician, String, Long> {
 
     @Override
     public void update(Musician musician) {
-        update(musician);
+        repository.update(musician);
     }
 
     @Override

@@ -18,7 +18,6 @@ import java.util.Objects;
 @EntityListeners({LifecycleListener.class})
 @DiscriminatorColumn(name = "DISK", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("ITEM")
-@Stateful
 @Loggable
 public abstract class Item implements Serializable {
 

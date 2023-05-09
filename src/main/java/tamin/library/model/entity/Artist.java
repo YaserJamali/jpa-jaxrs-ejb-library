@@ -20,7 +20,6 @@ import java.time.LocalDate;
 @EntityListeners({AgeCalculationListener.class, ValidationListener.class, LifecycleListener.class})
 @DiscriminatorColumn(name = "ARTIST", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("PERSON")
-@Stateful
 @Loggable
 public abstract class Artist implements Serializable {
 

@@ -1,28 +1,20 @@
 package tamin.library.service;
 
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import java.io.Serializable;
 
-public abstract class Services<T, S extends String, U extends Number> implements AutoCloseable {
-    @Inject
-    private EntityManager entityManager;
+public interface Services<T, S extends String, U extends Number> extends Serializable {
 
-    public abstract S save(T t);
+    void save(T t);
 
-    public abstract T update(T t);
+    void update(T t);
 
-    public abstract S remove(U u);
+    S remove(U u);
 
-    public abstract S findById(U u);
+    S findById(U u);
 
-    public abstract S findAll();
+    S findAll();
 
-    public abstract S findByName(S s);
+    S findByName(S s);
 
 
-    @Override
-    public void close() {
-        entityManager.close();
-
-    }
 }

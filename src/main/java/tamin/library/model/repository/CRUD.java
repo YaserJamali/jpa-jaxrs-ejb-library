@@ -1,24 +1,21 @@
 package tamin.library.model.repository;
 
-import tamin.library.model.util.JPA;
 
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class CRUD<T,S,U extends Number> implements AutoCloseable {
+public interface CRUD<T, S extends String, U extends Number> extends Serializable {
 
-    public abstract T save(T t);
-    public abstract T update(T t);
+    T save(T t);
 
-    public abstract T remove(U u);
+    T update(T t);
 
-    public abstract T findById(U u);
+    T remove(U u);
 
-    public abstract List<T> findAll();
-    public abstract List<T> findByName(S s);
+    T findById(U u);
 
-    @Override
-    public void close()  {
-        JPA.getInstance().getEntityManager().close();
-    }
+    List<T> findAll();
+
+    List<T> findByName(S s);
 
 }

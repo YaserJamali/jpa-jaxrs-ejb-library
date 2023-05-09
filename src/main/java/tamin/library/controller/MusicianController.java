@@ -1,34 +1,29 @@
 package tamin.library.controller;
 
-import com.google.gson.Gson;
 import tamin.library.service.MusicianServices;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 @Path("/musician")
 @Stateless
-public class MusicianController {
-
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public class MusicianController implements BaseController<Response, String, Long> {
 
     @Inject
     private MusicianServices services;
 
-
-    public MusicianController() {
-        services = MusicianServices.getInstance();
-    }
-
-    @GET
-    @Path("saveMusician")
+    @POST
+    @Path("/save-musician")
     @Produces("application/json")
-    public String save(
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response save(
             @QueryParam("name") String name,
             @QueryParam("family") String family,
             @QueryParam("bio") String bio,
@@ -36,17 +31,21 @@ public class MusicianController {
             @QueryParam("preferredInstrument") String preferredInstrument
     ) {
         try {
-            return services.
-                    saveInstance(name, family, bio, LocalDate.parse(birthDay), preferredInstrument);
+            return Response.ok(services.
+                            saveInstance(name, family, bio, LocalDate.parse(birthDay)
+                                    , preferredInstrument))
+                    .build();
         } catch (DateTimeParseException e) {
-            return new Gson().toJson("Please Give A Valid Date Time " + e.getMessage());
+            return Response
+                    .ok("Please Give A Valid Date Time " + e.getMessage())
+                    .build();
         }
     }
 
-    @GET
-    @Path("/updateMusician")
+    @PUT
+    @Path("/update-musician")
     @Produces("application/json")
-    public String update(
+    public Response update(
             @QueryParam("id") Long id,
             @QueryParam("name") String name,
             @QueryParam("family") String family,
@@ -55,42 +54,71 @@ public class MusicianController {
             @QueryParam("preferredInstrument") String preferredInstrument
     ) {
         try {
-            return services.
-                    updateInstance(id, name, family, bio, LocalDate.parse(birthDay), preferredInstrument);
+            return Response
+                    .ok(services.
+                            updateInstance(id, name, family, bio
+                                    , LocalDate.parse(birthDay), preferredInstrument))
+                    .build();
         } catch (DateTimeParseException e) {
-            return new Gson().toJson("Please Give A Valid Date Time " + e.getMessage());
+            return Response
+                    .ok("Please Give A Valid Date Time " + e.getMessage())
+                    .build();
         }
     }
 
 
     @GET
     @Produces("application/json")
-    @Path("/search_name")
-    public String findByName(@QueryParam("name") String name) {
-        return services.findByName(name);
+    @Path("/find/name")
+    public Response findByName(
+            @QueryParam("name") String name) {
+        return Response
+                .ok(services.findByName(name))
+                .build();
     }
 
     @GET
     @Produces("application/json")
-    @Path("/searchById")
-    public String findById(@QueryParam("id") Long id) {
-
-        return services.findById(id);
+    @Path("/find/id")
+    @Override
+    public Response findById(
+            @QueryParam("id") Long id) {
+        return Response
+                .ok(services.findById(id))
+                .build();
     }
 
     @GET
     @Produces("application/json")
-    @Path("/findAll")
-    public String findAll() {
-        return services.findAll();
+    @Path("/find/all")
+    @Override
+    public Response findAll() {
+        return Response
+                .ok(services.findAll())
+                .build();
     }
 
     @GET
     @Produces("application/json")
-    @Path("/removeById")
-    public String removeById(@QueryParam("id") Long id) {
+    @Path("/remove/id")
+    @Override
+    public Response removeById(
+            @QueryParam("id") Long id) {
 
-        return services.remove(id);
+        return Response
+                .ok(services.remove(id))
+                .build();
     }
 
+    @Path("/add-musician-to-cd")
+    @POST
+    @Produces("application/json")
+    @Override
+    public Response addRelation(
+            @QueryParam("musicianId") Long musicianId,
+            @QueryParam("cdId") Long cdId) {
+        return Response
+                .ok(services.addCDtoMusician(musicianId, cdId))
+                .build();
+    }
 }

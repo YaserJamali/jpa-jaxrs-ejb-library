@@ -2,14 +2,16 @@ package tamin.library.service;
 
 
 import com.google.gson.Gson;
+import tamin.library.model.entity.Cd;
 import tamin.library.model.entity.Musician;
+import tamin.library.model.repository.CdRepository;
 import tamin.library.model.repository.MusicianRepository;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
 
 
-public class MusicianServices extends Services<Musician,String,Long> {
+public class MusicianServices implements Services<Musician, String, Long> {
 
 
     @Inject
@@ -18,7 +20,6 @@ public class MusicianServices extends Services<Musician,String,Long> {
     private static MusicianServices instance;
 
     private MusicianServices() {
-        repository = MusicianRepository.getInstance();
 
     }
 
@@ -30,14 +31,15 @@ public class MusicianServices extends Services<Musician,String,Long> {
     }
 
     @Override
-    public String save(Musician musician) {
-        return new Gson().toJson(repository.save(musician));
+    public void save(Musician musician) {
+        repository.save(musician);
     }
 
     @Override
-    public Musician update(Musician musician) {
-        return repository.update(musician);
+    public void update(Musician musician) {
+        update(musician);
     }
+
     @Override
     public String findByName(String name) {
         if (name != null) {
@@ -98,6 +100,23 @@ public class MusicianServices extends Services<Musician,String,Long> {
             return new Gson().toJson("Please Fill All Fields");
         }
         return new Gson().toJson("Error:The Musician Id: " + id + " Is Not Exist");
+    }
+
+    public String addCDtoMusician(Long musicianId, Long cdId) {
+        if (cdId != null && musicianId != null) {
+            Musician musician = repository.findById(musicianId);
+            if (musician != null) {
+                Cd cd = CdRepository.getInstance().findById(musicianId);
+                if (cd != null) {
+                    musician.getCds().add(cd);
+                    update(musician);
+                    return new Gson().toJson(cd);
+                }
+                return new Gson().toJson("ERROR There Is No Cd With Id: " + cdId);
+            }
+            return new Gson().toJson("ERROR There Is No Musician With Id: " + musicianId);
+        }
+        return new Gson().toJson("ERROR:Please Give IDs");
     }
 
 }

@@ -10,14 +10,14 @@ import tamin.library.model.repository.BookRepository;
 import javax.inject.Inject;
 import java.time.LocalDate;
 
-public class AuthorServices extends Services<Author, String, Long> {
+public class AuthorServices implements Services<Author, String, Long> {
     private static AuthorServices instance;
 
     @Inject
     private AuthorRepository repository;
 
     private AuthorServices() {
-        repository = AuthorRepository.getInstance();
+
     }
 
     public static AuthorServices getInstance() {
@@ -28,13 +28,13 @@ public class AuthorServices extends Services<Author, String, Long> {
     }
 
     @Override
-    public String save(Author author) {
-        return new Gson().toJson(repository.save(author));
+    public void save(Author author) {
+        repository.save(author);
     }
 
     @Override
-    public Author update(Author author) {
-        return repository.update(author);
+    public void update(Author author) {
+        repository.update(author);
     }
 
     @Override
@@ -69,6 +69,19 @@ public class AuthorServices extends Services<Author, String, Long> {
         return new Gson().toJson("This ID: " + id + " IS Not Exist");
     }
 
+    public String saveInstance(String name, String family, LocalDate brithDay, String bio) {
+        if (name != null && family != null && bio != null && brithDay != null) {
+            Author author = new Author();
+            author.setName(name)
+                    .setFamily(family)
+                    .setDateOfBirth(brithDay)
+                    .setBio(bio);
+            save(author);
+            return new Gson().toJson(author);
+        }
+        return new Gson().toJson("The Information are Invalid or incomplete");
+    }
+
     public String updateInstance(Long id, String name, String family, LocalDate brithDay, String bio) {
         Author author = repository.findById(id);
         if (id != null && author != null) {
@@ -85,18 +98,7 @@ public class AuthorServices extends Services<Author, String, Long> {
         return new Gson().toJson("Error:The Author Id Is Not Exist");
     }
 
-    public String saveInstance(String name, String family, LocalDate brithDay, String bio) {
-        if (name != null && family != null && bio != null && brithDay != null) {
-            Author author = new Author();
-            author.setName(name)
-                    .setFamily(family)
-                    .setDateOfBirth(brithDay)
-                    .setBio(bio);
-            save(author);
-            return new Gson().toJson(author);
-        }
-        return new Gson().toJson("The Information are Invalid or incomplete");
-    }
+
 
 
     public String addAuthorsBooks(Long authorId, Long bookId) {
@@ -115,4 +117,6 @@ public class AuthorServices extends Services<Author, String, Long> {
         }
         return new Gson().toJson("ERROR:Please Give IDs");
     }
+
+
 }

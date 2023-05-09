@@ -1,21 +1,26 @@
 package tamin.library.model.entity;
 
 import com.google.gson.Gson;
-import tamin.library.service.utiles.LifecycleListener;
+import tamin.library.utiles.LifecycleListener;
+import tamin.library.utiles.Loggable;
 
+import javax.ejb.Stateful;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Objects;
 
 //@MappedSuperclass
 @Entity(name = "itemtEntity")
 @Table(name = "ITEM_TABLE")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@EntityListeners({ LifecycleListener.class})
-@DiscriminatorColumn(name = "DISK", discriminatorType = DiscriminatorType.STRING) //its work with @Entity Annotations
-@DiscriminatorValue("BASE") //its work with @Entity Annotations
-public abstract class Item {
+@EntityListeners({LifecycleListener.class})
+@DiscriminatorColumn(name = "DISK", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("ITEM")
+@Stateful
+@Loggable
+public abstract class Item implements Serializable {
 
 
     // ======================================
@@ -23,7 +28,7 @@ public abstract class Item {
     // ======================================
 
     @Id
-    @SequenceGenerator(name = "itemSeq", sequenceName = "item_seq",  allocationSize = 1)
+    @SequenceGenerator(name = "itemSeq", sequenceName = "item_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itemSeq")
     private Long id;
 

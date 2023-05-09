@@ -2,21 +2,20 @@ package tamin.library.service;
 
 
 import com.google.gson.Gson;
-import tamin.library.model.entity.CD;
+import tamin.library.model.entity.Cd;
 import tamin.library.model.entity.Musician;
 import tamin.library.model.repository.CdRepository;
 import tamin.library.model.repository.MusicianRepository;
 
 import javax.inject.Inject;
 
-public class CdServices extends Services<CD,String,Long> {
+public class CdServices implements Services<Cd, String, Long> {
     private static CdServices instance;
 
     @Inject
     private CdRepository repository;
 
     private CdServices() {
-        repository = CdRepository.getInstance();
     }
 
     public static CdServices getInstance() {
@@ -27,20 +26,19 @@ public class CdServices extends Services<CD,String,Long> {
     }
 
     @Override
-    public String save(CD cd) {
-        return new Gson().toJson(repository.save(cd));
+    public void save(Cd cd) {
+        repository.save(cd);
     }
 
     @Override
-    public CD update(CD cd) {
-        return repository.update(cd);
+    public void update(Cd cd) {
+        repository.update(cd);
     }
 
     @Override
     public String findByName(String title) {
         if (title != null) {
-            String temp = title.toLowerCase();
-            return new Gson().toJson(repository.findByName(temp));
+            return new Gson().toJson(repository.findByName(title));
         }
         return new Gson().toJson("Please Enter A Valid Title ");
     }
@@ -49,12 +47,14 @@ public class CdServices extends Services<CD,String,Long> {
 
     @Override
     public String findById(Long id) {
-        if (id != null && repository.findById(id) != null) {
-
-
-            return new Gson().toJson(repository.findById(id));
+        if (id != null) {
+            Cd cd = repository.findById(id);
+            if (cd != null) {
+                return new Gson().toJson(cd);
+            }
+            return new Gson().toJson("There Is No Cd With This Id: " + id);
         }
-        return new Gson().toJson("There Is No CD With This Id: " + id);
+        return new Gson().toJson("Please Enter A Valid Number ");
     }
 
     @Override
@@ -66,15 +66,14 @@ public class CdServices extends Services<CD,String,Long> {
     @Override
     public String remove(Long id) {
         if (id != null && repository.findById(id) != null) {
-
             return new Gson().toJson(repository.remove(id));
         }
-        return new Gson().toJson("There Is No CD With This Id: " + id);
+        return new Gson().toJson("There Is No Cd With This Id: " + id);
     }
 
     public String saveInstance(String title, String description, Double unitCost, Double totalDuration, String genre) {
         if (title != null && description != null && unitCost != null && totalDuration != null && genre != null) {
-            CD cd = new CD();
+            Cd cd = new Cd();
             cd.setTotalDuration(totalDuration);
             cd.setGenre(genre);
             cd.setTitle(title);
@@ -87,9 +86,9 @@ public class CdServices extends Services<CD,String,Long> {
     }
 
     public String updateInstance(Long id, String title, String description, Double unitCost, Double totalDuration, String genre) {
-        CD cd = repository.findById(id);
-        if (title != null && cd != null) {
-            if (description != null && unitCost != null && totalDuration != null && genre != null) {
+        Cd cd = repository.findById(id);
+        if (id != null && cd != null) {
+            if (title != null && description != null && unitCost != null && totalDuration != null && genre != null) {
                 cd.setTotalDuration(totalDuration);
                 cd.setGenre(genre);
                 cd.setTitle(title);
@@ -100,13 +99,13 @@ public class CdServices extends Services<CD,String,Long> {
             }
             return new Gson().toJson("Please Fill All Fields");
         }
-        return new Gson().toJson("There Is No CD With This Id: " + id);
+        return new Gson().toJson("There Is No Cd With This Id: " + id);
     }
 
 
     public String addMusicianToCd(Long cdId, Long musicianId) {
         if (cdId != null && musicianId != null) {
-            CD cd = repository.findById(cdId);
+            Cd cd = repository.findById(cdId);
             if (cd != null) {
                Musician musician = MusicianRepository.getInstance().findById(musicianId);
                 if (musician != null) {
@@ -116,7 +115,7 @@ public class CdServices extends Services<CD,String,Long> {
                 }
                 return new Gson().toJson("ERROR There Is No Musician With Id: " + musicianId);
             }
-            return new Gson().toJson("ERROR There Is No CD With Id: " + cdId);
+            return new Gson().toJson("ERROR There Is No Cd With Id: " + cdId);
         }
         return new Gson().toJson("ERROR:Please Give IDs");
     }

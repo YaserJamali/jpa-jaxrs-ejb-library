@@ -1,98 +1,112 @@
 package tamin.library.controller;
 
-import com.google.gson.Gson;
+
 import tamin.library.service.AuthorServices;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 @Path("/author")
 @Stateless
-public class AuthorController {
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public class AuthorController implements BaseController<Response, String, Long> {
 
     @Inject
     private AuthorServices services;
 
-    public AuthorController() {
-        services = AuthorServices.getInstance();
-    }
-    @Path("saveAuthor")
-    @GET
+
+    @Path("save-author")
+    @POST
     @Produces("application/json")
-    public String save(
+    public Response save(
             @QueryParam("name") String name,
             @QueryParam("family") String family,
             @QueryParam("birthDay") String birthDay,
             @QueryParam("bio") String bio) {
         try {
-            return services.saveInstance(name, family, LocalDate.parse(birthDay),  bio);
+            return Response
+                    .ok(services.saveInstance(name, family,
+                            LocalDate.parse(birthDay), bio))
+                    .build();
         } catch (DateTimeParseException e) {
-            return new Gson().toJson("Please Give A Valid Date Time " + e.getMessage());
+            return Response.serverError().build();
         }
     }
 
-    @Path("/update")
-    @GET
+    @Path("/update-author")
+    @PUT
     @Produces("application/json")
-    public String update(
+    public Response update(
             @QueryParam("id") Long id,
             @QueryParam("name") String name,
             @QueryParam("family") String family,
             @QueryParam("birthDay") String brithDay,
             @QueryParam("bio") String bio
     ) {
-
-        return services.updateInstance(id, name, family, LocalDate.parse(brithDay),  bio);
-
+        return Response
+                .ok(services.updateInstance(id, name, family,
+                        LocalDate.parse(brithDay), bio))
+                .build();
     }
-
 
     @GET
     @Produces("application/json")
-    @Path("/search_name")
-    public String findByName(@QueryParam("name") String name) {
-        return services.findByName(name);
+    @Path("/find/name")
+    public Response findByName(
+            @QueryParam("name") String name) {
+        return Response
+                .ok(services.findByName(name))
+                .build();
     }
 
 
-    @Path("/find")
+    @Path("/find/id")
     @GET
     @Produces("application/json")
-    public String findById(@QueryParam("id") Long id) throws Exception {
+    public Response findById(
+            @QueryParam("id") Long id) {
 
-        return services.findById(id);
+        return Response
+                .ok(services.findById(id))
+                .build();
     }
 
 
-    @Path("/findAll")
+    @Path("/find/all")
     @GET
     @Produces("application/json")
-    public String findApi() {
-        return services.findAll();
+    public Response findAll() {
+        return Response
+                .ok(services.findAll())
+                .build();
     }
 
 
     @Path("/remove")
-    @GET
+    @DELETE
     @Produces("application/json")
-    public String removeByID(@QueryParam("id") Long id) {
-        return services.remove(id);
+    public Response removeById(
+            @QueryParam("id") Long id) {
+        return Response
+                .ok(services.remove(id))
+                .build();
     }
-
 
 
     @Path("/add-book-to-author")
-    @GET
+    @POST
     @Produces("application/json")
-    public String addBookToAuthor(@QueryParam("authorId") Long authorId ,@QueryParam("bookId") Long bookId)  {
-
-        return services.addAuthorsBooks(authorId,bookId);
+    public Response addRelation(
+            @QueryParam("authorId") Long authorId,
+            @QueryParam("bookId") Long bookId) {
+        return Response
+                .ok(services.addAuthorsBooks(authorId, bookId))
+                .build();
     }
-
 }

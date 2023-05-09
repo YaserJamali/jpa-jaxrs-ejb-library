@@ -4,20 +4,18 @@ package tamin.library.service;
 import com.google.gson.Gson;
 import tamin.library.model.entity.Book;
 import tamin.library.model.repository.BookRepository;
-import tamin.library.service.utiles.IsbnGenerator;
-import tamin.library.service.utiles.NumberGenerator;
+import tamin.library.utiles.NumberGenerator;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.PersistenceContext;
-import java.io.Serializable;
 import java.time.LocalDate;
 
 @ApplicationScoped
 @Singleton
-public class BookServices extends Services<Book, String, Long> implements Serializable {
+public class BookServices implements Services<Book, String, Long> {
     private static BookServices instance;
 
     @Inject
@@ -30,8 +28,6 @@ public class BookServices extends Services<Book, String, Long> implements Serial
 
 
     private BookServices() {
-        generator = IsbnGenerator.getInstance();
-        repository = BookRepository.getInstance();
     }
 
     public static BookServices getInstance() {
@@ -43,13 +39,13 @@ public class BookServices extends Services<Book, String, Long> implements Serial
 
 
     @Override
-    public String save(Book book) {
-        return new Gson().toJson(repository.save(book));
+    public void save(Book book) {
+        repository.save(book);
     }
 
     @Override
-    public Book update(Book book) {
-        return repository.update(book);
+    public void update(Book book) {
+        repository.update(book);
     }
 
     @Override

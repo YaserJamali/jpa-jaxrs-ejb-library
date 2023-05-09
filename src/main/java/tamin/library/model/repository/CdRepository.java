@@ -1,34 +1,32 @@
 package tamin.library.model.repository;
 
 
-import tamin.library.model.entity.CD;
-import tamin.library.model.util.JPA;
+import tamin.library.model.entity.Cd;
+import tamin.library.utiles.Loggable;
 
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.sql.SQLException;
+import java.sql.SQLWarning;
 import java.util.List;
 
 @Singleton
-public class CdRepository extends CRUD<CD, String, Long> {
+@RequestScoped
+public class CdRepository implements CRUD<Cd, String, Long> {
     private static CdRepository instance;
-    @Inject
+
+    @PersistenceContext(unitName = "JPA")
+    @Produces
     private EntityManager manager;
 
-    @PersistenceContext
-    @Produces
-    private EntityTransaction transaction;
-
-    @Inject
-    private JPA jpa;
 
     private CdRepository() {
-        jpa = JPA.getInstance();
+
     }
 
     public static CdRepository getInstance() {
@@ -39,81 +37,62 @@ public class CdRepository extends CRUD<CD, String, Long> {
     }
 
     @Override
-    @Transactional
-    public CD save(CD cd) {
-        manager = jpa.getEntityManager();
-        transaction = manager.getTransaction();
-        transaction.begin();
+    @Loggable
+    @Transactional(rollbackOn = {ArrayIndexOutOfBoundsException.class, IllegalArgumentException.class},
+            dontRollbackOn = {SQLWarning.class, SQLException.class})
+    public Cd save(Cd cd) {
         manager.persist(cd);
-        transaction.commit();
-        manager.close();
         return cd;
     }
 
     @Override
-    @Transactional
-    public CD update(CD cd) {
-        manager = jpa.getEntityManager();
-        transaction = manager.getTransaction();
-        transaction.begin();
+    @Loggable
+    @Transactional(rollbackOn = {ArrayIndexOutOfBoundsException.class, IllegalArgumentException.class},
+            dontRollbackOn = {SQLWarning.class, SQLException.class})
+    public Cd update(Cd cd) {
         manager.merge(cd);
-        transaction.commit();
-        manager.close();
         return cd;
     }
 
     @Override
-    public List<CD> findByName(String title) {
-        manager = jpa.getEntityManager();
-        TypedQuery<CD> query = manager.createNamedQuery(CD.FIND_BY_TITLE, CD.class);
+    public List<Cd> findByName(String title) {
+        TypedQuery<Cd> query = manager.createNamedQuery(Cd.FIND_BY_TITLE, Cd.class);
         query.setParameter("title", "%" + title + "%");
-        List<CD> list = query.getResultList();
-        manager.close();
+        List<Cd> list = query.getResultList();
         return list;
     }
 
     @Override
-    public CD findById(Long id) {
-        manager = JPA.getInstance().getEntityManager();
-        CD cd = manager.find(CD.class, id);
-        manager.close();
+    public Cd findById(Long id) {
+        Cd cd = manager.find(Cd.class, id);
         return cd;
     }
 
     @Override
-    public List<CD> findAll() {
-        manager = jpa.getEntityManager();
-        TypedQuery<CD> query = manager.createNamedQuery(CD.FIND_ALL_CD, CD.class);
-        List<CD> list = query.getResultList();
-        manager.close();
+    public List<Cd> findAll() {
+        TypedQuery<Cd> query = manager.createNamedQuery(Cd.FIND_ALL_CD, Cd.class);
+        List<Cd> list = query.getResultList();
         return list;
     }
 
 
     @Override
-    @Transactional
-    public CD remove(Long id) {
-        manager = jpa.getEntityManager();
-        transaction = manager.getTransaction();
-        transaction.begin();
-        CD cd = manager.find(CD.class, id);
+    @Loggable
+    @Transactional(rollbackOn = {ArrayIndexOutOfBoundsException.class},
+            dontRollbackOn = {SQLWarning.class, SQLException.class})
+    public Cd remove(Long id) {
+        Cd cd = manager.find(Cd.class, id);
         manager.remove(cd);
-        transaction.commit();
-        manager.close();
         return cd;
     }
 
-    public CD raiseUnitCost(Long id, Double raise) {
-        manager = jpa.getEntityManager();
-        transaction = manager.getTransaction();
-        transaction.begin();
-        CD cd = manager.find(CD.class, id);
+    @Loggable
+    @Transactional(rollbackOn = {ArrayIndexOutOfBoundsException.class},
+            dontRollbackOn = {SQLWarning.class, SQLException.class})
+    public Cd raiseUnitCost(Long id, Double raise) {
+        Cd cd = manager.find(Cd.class, id);
         cd.setUnitCost(cd.getUnitCost() + raise);
-        transaction.commit();
-        manager.close();
         return cd;
 
     }
-
-
 }

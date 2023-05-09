@@ -3,23 +3,29 @@ package tamin.library.model.entity;
 
 import com.google.gson.Gson;
 import org.hibernate.annotations.NamedQuery;
-import tamin.library.service.utiles.LifecycleListener;
-import tamin.library.service.utiles.ValidationListener;
+import tamin.library.utiles.LifecycleListener;
+import tamin.library.utiles.Loggable;
+import tamin.library.utiles.ValidationListener;
 
+import javax.ejb.Stateful;
+import javax.inject.Named;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.PERSIST;
 
+@Named
 @Entity(name = "authorEntity")
 @Table(name = "author_table")
 @DiscriminatorValue("AUTHOR")
 @EntityListeners({
         ValidationListener.class, LifecycleListener.class
 })
-@NamedQuery(name = "FIND_BY_AUTHOR_NAME", query = "select a from authorEntity a where lower(a.name) like lower(:name) order by id,name,family")
+@NamedQuery(name = "FIND_BY_AUTHOR_NAME", query = "select a from authorEntity a where lower( a.family) like lower(:name) or lower( a.name)  like  lower(:name)  order by id,name,family")
 @NamedQuery(name = "ALL_AUTHORS", query = "select a  from authorEntity a order by id,name,family")
+@Stateful
+@Loggable
 public class Author extends Artist {
 
     // ======================================
@@ -46,7 +52,7 @@ public class Author extends Artist {
     // ======================================
 
 
-    // ======================================
+// ======================================
     // =          Getters & Setters         =
     // ======================================
 

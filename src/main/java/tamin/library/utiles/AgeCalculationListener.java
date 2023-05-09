@@ -1,4 +1,4 @@
-package tamin.library.service.utiles;
+package tamin.library.utiles;
 
 
 
@@ -14,10 +14,6 @@ import java.time.Period;
 
 public class AgeCalculationListener {
 
-    // ======================================
-    // =          Lifecycle Methods         =
-    // ======================================
-
     @PostLoad
     @PostPersist
     @PostUpdate
@@ -27,7 +23,6 @@ public class AgeCalculationListener {
             artist.setAge(null);
             return;
         }
-
         artist.setAge(Period.between(artist.getDateOfBirth(), LocalDate.now()).getYears());
     }
 }

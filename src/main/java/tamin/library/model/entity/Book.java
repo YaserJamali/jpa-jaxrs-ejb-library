@@ -1,7 +1,11 @@
 package tamin.library.model.entity;
 import org.hibernate.annotations.NamedQuery;
+import tamin.library.utiles.Loggable;
+
+import javax.ejb.Stateful;
 import javax.persistence.*;
 import javax.validation.constraints.Past;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -10,7 +14,9 @@ import java.util.Objects;
 @DiscriminatorValue("BOOK")
 @NamedQuery(name = "FIND_BY_BOOK_TITLE", query = "select b from bookEntity b where lower(b.title) like lower(:bookTitle) order by id")
 @NamedQuery(name = "ALL_BOOKS", query = "select b  from bookEntity b order by id,title")
-public class Book extends Item {
+@Stateful
+@Loggable
+public class Book extends Item implements Serializable {
 
     // ======================================
     // =             Attributes             =
@@ -64,7 +70,6 @@ public void validate(){
         this.nbOfPage = nbOfPage;
         return this;
     }
-
     public LocalDate getPublicationDate() {
         return publicationDate;
     }

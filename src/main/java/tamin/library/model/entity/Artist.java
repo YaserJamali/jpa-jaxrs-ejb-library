@@ -1,13 +1,16 @@
 package tamin.library.model.entity;
 
 import com.google.gson.Gson;
-import tamin.library.service.utiles.AgeCalculationListener;
-import tamin.library.service.utiles.LifecycleListener;
-import tamin.library.service.utiles.ValidationListener;
+import tamin.library.utiles.AgeCalculationListener;
+import tamin.library.utiles.LifecycleListener;
+import tamin.library.utiles.Loggable;
+import tamin.library.utiles.ValidationListener;
 
+import javax.ejb.Stateful;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 //@MappedSuperclass
@@ -17,9 +20,9 @@ import java.time.LocalDate;
 @EntityListeners({AgeCalculationListener.class, ValidationListener.class, LifecycleListener.class})
 @DiscriminatorColumn(name = "ARTIST", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("PERSON")
-
-
-public abstract class Artist {
+@Stateful
+@Loggable
+public abstract class Artist implements Serializable {
 
     // ======================================
     // =             Attributes             =

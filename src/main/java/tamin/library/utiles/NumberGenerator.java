@@ -1,10 +1,6 @@
-package tamin.library.service.utiles;
+package tamin.library.utiles;
 
 public interface NumberGenerator {
-
     String numberGenerator();
-
-
-
 
 }

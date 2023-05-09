@@ -1,4 +1,4 @@
-package tamin.library.service.utiles;
+package tamin.library.utiles;
 
 import javax.inject.Singleton;
 import javax.persistence.*;

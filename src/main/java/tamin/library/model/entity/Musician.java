@@ -1,14 +1,17 @@
 package tamin.library.model.entity;
 
-import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.io.Serializable;
-
 import com.google.gson.Gson;
 import org.hibernate.annotations.NamedQuery;
-import tamin.library.service.utiles.LifecycleListener;
-import tamin.library.service.utiles.ValidationListener;
+import tamin.library.utiles.LifecycleListener;
+import tamin.library.utiles.Loggable;
+import tamin.library.utiles.ValidationListener;
+
+import javax.ejb.Stateful;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+import static javax.persistence.CascadeType.PERSIST;
 
 
 @Entity(name = "musicianEntity")
@@ -25,7 +28,9 @@ import tamin.library.service.utiles.ValidationListener;
         " like '%?1%' order by m.id,m.name")
 @Table(name = "musician_table")
 @DiscriminatorValue("MUSICIAN")
-public class Musician extends Artist implements Serializable {
+@Stateful
+@Loggable
+public class Musician extends Artist {
 
     // ======================================
     // =             Attributes             =
@@ -34,6 +39,10 @@ public class Musician extends Artist implements Serializable {
     @Column(name = "preferred_instrument", columnDefinition = "nvarchar2(30)")
     private String preferredInstrument;
 
+    @ManyToMany(cascade = PERSIST, fetch = FetchType.EAGER)
+    @JoinTable(name = "CD_MUSICIAN_JOIN")
+
+    private Set<Cd> cds = new HashSet<>();
 
 
     // ======================================
@@ -41,7 +50,6 @@ public class Musician extends Artist implements Serializable {
     // ======================================
     public final static String FIND_MUSICIAN_NAME = "FIND_BY_MUSICIAN_NAME";
     public final static String FIND_ALL_MUSICIAN = "ALL_MUSICIAN";
-
 
 
     // ======================================
@@ -57,6 +65,14 @@ public class Musician extends Artist implements Serializable {
         return this;
     }
 
+    public Set<Cd> getCds() {
+        return cds;
+    }
+
+    public Musician setCds(Set<Cd> cds) {
+        this.cds = cds;
+        return this;
+    }
     // ======================================
     // =    hashcode, equals & toString     =
     // ======================================

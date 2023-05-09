@@ -2,6 +2,9 @@ package tamin.library.model.entity;
 
 import com.google.gson.Gson;
 import org.hibernate.annotations.NamedQuery;
+import tamin.library.utiles.Loggable;
+
+import javax.ejb.Stateful;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
@@ -11,10 +14,12 @@ import static javax.persistence.CascadeType.PERSIST;
 
 @Entity(name = "cdEntity")
 @Table(name = "cd_table")
-@DiscriminatorValue("CD")
+@DiscriminatorValue("Cd")
 @NamedQuery(name = "FIND_BY_CD_TITLE", query = "select c from cdEntity c where lower(c.title) like lower(:title) order by id ")
 @NamedQuery(name = "ALL_CD", query = "select c  from cdEntity c order by id,title")
-public class CD extends Item {
+@Stateful
+@Loggable
+public class Cd extends Item {
 
     // ======================================
     // =             Attributes             =
@@ -24,8 +29,8 @@ public class CD extends Item {
     @Column
     private String genre;
 
-    @OneToMany(cascade = PERSIST, fetch = FetchType.EAGER)
-    @JoinTable(name = "CD_MUSICIAN_JOIN",
+    @ManyToMany(cascade = PERSIST, fetch = FetchType.EAGER)
+    @JoinTable(name = "MUSICIAN_CD_JOIN",
             joinColumns = @JoinColumn(name = "CD_fk"),
             inverseJoinColumns = @JoinColumn(name = "MUSICIAN_fk"))
 
@@ -48,7 +53,7 @@ public class CD extends Item {
         return totalDuration;
     }
 
-    public CD setTotalDuration(Double totalDuration) {
+    public Cd setTotalDuration(Double totalDuration) {
         this.totalDuration = totalDuration;
         return this;
     }
@@ -57,7 +62,7 @@ public class CD extends Item {
         return genre;
     }
 
-    public CD setGenre(String genre) {
+    public Cd setGenre(String genre) {
         this.genre = genre;
         return this;
     }
@@ -66,7 +71,7 @@ public class CD extends Item {
         return musicians;
     }
 
-    public CD setMusicians(Set<Musician> musicians) {
+    public Cd setMusicians(Set<Musician> musicians) {
         this.musicians = musicians;
         return this;
     }
@@ -80,9 +85,9 @@ public class CD extends Item {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CD)) return false;
+        if (!(o instanceof Cd)) return false;
         if (!super.equals(o)) return false;
-        CD cd = (CD) o;
+        Cd cd = (Cd) o;
         return Double.compare(cd.getTotalDuration(), getTotalDuration()) == 0 && Objects.equals(getGenre(), cd.getGenre()) && Objects.equals(getMusicians(), cd.getMusicians());
     }
 
